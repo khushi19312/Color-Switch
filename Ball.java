@@ -27,6 +27,7 @@ public class Ball extends Application{
 	  float dist;
       float gr;
       Timeline pre=null;
+      
 	  public int gety_pos(){
 	    return getX_pos();
 	  }
@@ -49,71 +50,43 @@ public class Ball extends Application{
 	    presence = !presence;
 	  }
 	  
-	  public static void main(String[] args)
-	  {
-		  launch(args);
-	  }
 	
-	@Override
-	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
-		Circle ball = new Circle(10, Color.RED);
-		setMyball(ball);
-        ball.setCenterY(600);
-        setY_pos((int)ball.getCenterY());
-        ball.setCenterX(738);
-        setX_pos((int)ball.getCenterX());
-        setY_jump(200);
-        //ball.relocate(0,10);
-        Group root = new Group(ball);
-        Scene scene = new Scene(root, 1500, 800);
-       
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, (key) -> {
-            if(key.getCode()==KeyCode.ENTER) {
-            	 int maxtotravel=(int) ((ball.getCenterY()-getY_jump()));
-            	 if(pre!=null)
-            	 pre.stop();
-            	 dist=5;
-            	 gr=(float)0.2;
-            	//System.out.println("Enter pressed");
-                 Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>(){
-                		 @Override
-                		 public void handle(ActionEvent e)
-                		 {
-                		ball.setCenterY(ball.getCenterY()-dist);
-                		setY_pos((int)ball.getCenterY());
-                		dist=dist-gr;
-                		//if(dist>0)System.out.println("************up***********");
-                		//else
-                			//System.out.println("down");
-                		if(ball.getCenterY()<=maxtotravel)
-                			{dist=-dist;
-                			//gr=-1*(float)0.1;
-                			}
-                			 
-                		 }
-                	 
-                  
-                 })); 
-                timeline2.setCycleCount(100);
-               // ball.setCenterY(ball.getCenterY()-20);
-              
-                timeline2.play(); 
-                pre=timeline2;
-                
-                //System.out.println(ball.getCenterY());
-                
-            }  });
-        
-       
-                
+	 
+	  public void move()
+	  {
+		  int maxtotravel=(int) ((myball.getCenterY()-y_jump));
+     	  if(pre!=null)
+     	pre.stop();
+     	 dist=5;
+     	 gr=(float)0.2;
+     	System.out.println("Enter pressed");
+          Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>(){
+         		 @Override
+         		 public void handle(ActionEvent e)
+         		 {
+         		myball.setCenterY(myball.getCenterY()-dist);
+         		setY_pos((int)myball.getCenterY());
+         		dist-=gr;
+         		//if(dist>0)System.out.println("************up***********");
+         		//else
+         			//System.out.println("down");
+         		if(myball.getCenterY()<=maxtotravel)
+         			{dist=-dist;
+         			//gr=-1*(float)0.1;
+         			}
+	 
+          }
+          }));
+          
+          timeline2.setCycleCount(Animation.INDEFINITE);
+          // ball.setCenterY(ball.getCenterY()-20);
          
-        stage.setTitle("Color Switch");
-        stage.setScene(scene);
-
-        stage.show();
-		
-	}
+           timeline2.play(); 
+           pre=timeline2;
+	  }
+	  
+	 
+	
 	public Circle getMyball() {
 		return myball;
 	}
@@ -137,5 +110,10 @@ public class Ball extends Application{
 	}
 	public void setY_jump(int y_jump) {
 		this.y_jump = y_jump;
+	}
+	@Override
+	public void start(Stage arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 	}
