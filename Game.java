@@ -12,6 +12,7 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.application.Application;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -34,7 +35,7 @@ public class Game extends Application
 	//private Stars star_obj;
 	//private Stars next_nearest_star_obj;
 	private ColorWheel colorwheel_obj;
-	private HashMap<Integer,String> colors;
+	private HashMap<Integer,Color> colors;
 	private int currentScore;
 	private long serialVersionUID;
 	private static String[] args;
@@ -43,11 +44,39 @@ public class Game extends Application
 	Game(Stage stage) throws Exception
 	{
 		ball_obj=new Ball();
-		start(stage);
+
+		colors=new HashMap();
+		Color purple=Color.rgb(117, 37, 212);
+		Color pink=Color.rgb(255, 0, 128);
+		Color blue=Color.rgb(53, 226, 242);
+		Color yellow=Color.rgb(245, 223, 15);
+		colors.put(1,purple);//purple
+		colors.put(2,pink);//pink
+		colors.put(3,blue);//blue
+		colors.put(4,yellow);//yellow
+		
+		
 		Obstacle_list = new ArrayList<Obstacles>();
+		Obstacle_list.add(new Obstacle4(500));
+		addObstacles();
+		start(stage);
     }
 
+	 int getRandomColor()
+	    {
+	    	double f = Math.random()/Math.nextDown(1.0);
+	        double x = 1*(1.0 - f) + 4*f;
+	        return (int)x;
 
+	    }
+	 
+	 int getRandom()
+	    {
+	    	double f = Math.random()/Math.nextDown(1.0);
+	        double x = 1*(1.0 - f) + 6*f;
+	        return (int)x;
+
+	    }
 	public static int play()
 	{
 	
@@ -95,8 +124,21 @@ public class Game extends Application
 		return null;
 	}
 	
-	public void addObstacles()
+	public void addObstacles() throws Exception
 	{
+		int prev_y=Obstacle_list.get(0).gety_pos()-400;
+		int no=getRandom();
+		if(no<=4)
+			{Obstacle_list.add(new Obstacle4(prev_y));
+			System.out.println("Added");
+			}
+			
+		else if(no==5)
+			Obstacle_list.add(new Obstacle5(prev_y));
+		else
+			Obstacle_list.add(new Obstacle6(prev_y));
+		System.out.println("+++++++"+Obstacle_list.size());
+		
 		
 	}
 	
@@ -153,12 +195,33 @@ public class Game extends Application
         b2 = setsavebutton(sv);
         addscaletransition(b2);
         
+        
+        Circle ball = new Circle(9,colors.get(getRandomColor()));
+		ball_obj.setMyball(ball);
+        ball.setCenterY(700);
+        ball_obj.setY_pos((int)ball.getCenterY());
+        ball.setCenterX(738);
+        ball_obj.setX_pos((int)ball.getCenterX());
+        ball_obj.setY_jump(200);
+        //ball.relocate(0,10);
+       
 
-        
-        Group root = new Group(imageV, b1, b2, starthand);
+        Group root = new Group(imageV, b1, b2, starthand,Obstacle_list.get(0).getObstacle(),Obstacle_list.get(1).getObstacle(),ball);
         Scene scene = new Scene(root, 1500, 800);
-        
+
         System.out.println("Entering handler");
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+        	System.out.println("Enter pressed 1");
+            if(key.getCode()==KeyCode.SHIFT) {
+            	 System.out.println(ball.getCenterY());
+            	ball_obj.move();
+
+            }
+
+
+                //System.out.println(ball.getCenterY());
+
+              });
             
 
         stage.setTitle("Color Switch");
