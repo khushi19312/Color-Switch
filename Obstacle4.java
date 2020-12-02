@@ -35,32 +35,27 @@ public class Obstacle4 extends Obstacles{
 		start(stage);
 	}*/
 	
-	public ImageView addbackground() throws FileNotFoundException {
+	Obstacle4(int pos) throws Exception
+	{
+		 
+         sety_pos(pos);
+         start();
+	}
+	
 
-        Image image = new Image("AP\\background.png");
-        ImageView imageV=new ImageView(image);
-        imageV.setFitHeight(1700);
-        imageV.setFitWidth(1700);
-        imageV.setPreserveRatio(true);
-        return imageV;
+	
+	
+    public void start() throws Exception{
 
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-
-        ImageView imageV=addbackground();
-
+        
         ImageView imageView = new ImageView();
         List<Image> image = new ArrayList<>();
         
         create(image);
         move(imageView, image);
 
-
-        Group root = new Group(imageV, imageView);
-        primaryStage.setScene(new Scene(root, 1500, 800, Color.BLACK));
-        primaryStage.show();
+        setObstacle(imageView);
+        
     }
 
     public void create(List<Image> images) throws FileNotFoundException {
@@ -98,8 +93,8 @@ public class Obstacle4 extends Obstacles{
                 int index = (int) (fraction*(images.size()-1));
                 imageView.setImage(images.get(index));
                 setOrientation(index);
-                imageView.setX(590);
-                imageView.setY(410);
+                imageView.setX(getx_pos());
+                imageView.setY(gety_pos());
                 imageView.setFitHeight(320);
                 imageView.setFitWidth(320);
                 imageView.setPreserveRatio(true);
@@ -114,8 +109,5 @@ public class Obstacle4 extends Obstacles{
 	public void get_ypos() {
 		
 	}
-	public static void main(String[] args) {
-		launch(args);
-	}
+	
 }
-
