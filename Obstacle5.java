@@ -22,6 +22,16 @@ import java.util.List;
 
 public class Obstacle5 extends Obstacles{
 	
+	
+
+	Obstacle5(int pos) throws Exception
+	{
+		sety_pos(pos);
+		setx_pos(650);
+		 start();
+
+	}
+	
 	/*private int x_pos;
 	private int y_pos;
 	private String type;
@@ -35,32 +45,19 @@ public class Obstacle5 extends Obstacles{
 		start(stage);
 	}*/
 	
-	public ImageView addbackground() throws FileNotFoundException {
 
-        Image image = new Image("AP\\background.png");
-        ImageView imageV=new ImageView(image);
-        imageV.setFitHeight(1700);
-        imageV.setFitWidth(1700);
-        imageV.setPreserveRatio(true);
-        return imageV;
+    public void start() throws Exception{
 
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-
-        ImageView imageV=addbackground();
+        
 
         ImageView imgView = new ImageView();
         List<Image> images2 = new ArrayList<>();
         
         create(images2);
         move(imgView, images2);
+        setObstacle(imgView);
 
-
-        Group root = new Group(imageV, imgView);
-        primaryStage.setScene(new Scene(root, 1500, 800, Color.BLACK));
-        primaryStage.show();
+        
     }
 
     public void create(List<Image> images2) throws FileNotFoundException {
@@ -100,8 +97,8 @@ public class Obstacle5 extends Obstacles{
                 int index = (int) (fraction*(images2.size()-1));
                 imgView.setImage(images2.get(index));
                 setOrientation(index);
-                imgView.setX(660);
-                imgView.setY(290);
+                imgView.setX(getx_pos());
+                imgView.setY(gety_pos());
                 imgView.setFitHeight(180);
                 imgView.setFitWidth(180);
                 imgView.setPreserveRatio(true);
@@ -110,13 +107,5 @@ public class Obstacle5 extends Obstacles{
         animation2.play();
     }
 
-	
-	
-	public void get_ypos() {
-		
-	}
-	public static void main(String[] args) {
-		launch(args);
-	}
-}
 
+}
