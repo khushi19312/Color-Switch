@@ -29,7 +29,7 @@ public class Ball extends Application{
       Timeline pre=null;
       
 	  public int gety_pos(){
-	    return getX_pos();
+	    return getY_pos();
 	  }
 	  public void sety_pos(int x){
 	    setY_pos(x);
