@@ -14,6 +14,7 @@ import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
+import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -57,8 +58,10 @@ public class Game extends Application
 		
 		
 		Obstacle_list = new ArrayList<Obstacles>();
-		Obstacle_list.add(new Obstacle4(500));
+		Obstacle_list.add(new Obstacle4(600));
 		addObstacles();
+		
+		
 		start(stage);
     }
 
@@ -126,17 +129,34 @@ public class Game extends Application
 	
 	public void addObstacles() throws Exception
 	{
-		int prev_y=Obstacle_list.get(0).gety_pos()-400;
+		int prev_y = Obstacle_list.get(0).gety_pos()-300;
 		int no=getRandom();
-		if(no<=4)
-			{Obstacle_list.add(new Obstacle4(prev_y));
-			System.out.println("Added");
-			}
-			
-		else if(no==5)
+		System.out.println(no);
+		if(no==1){
+			Obstacle_list.add(new Obstacle1(prev_y));
+			System.out.print("added 1");
+		}
+		else if(no==2){
+			Obstacle_list.add(new Obstacle2(prev_y));
+			System.out.print("added 2");
+		}
+		else if(no==3){
+			Obstacle_list.add(new Obstacle3(prev_y));
+			System.out.print("added 3");
+		}
+		else if(no==4){
+			Obstacle_list.add(new Obstacle4(prev_y));
+			System.out.print("added 4");
+		}
+		else if(no==5){
 			Obstacle_list.add(new Obstacle5(prev_y));
-		else
+			System.out.print("added 5");
+		}
+		else{
 			Obstacle_list.add(new Obstacle6(prev_y));
+			System.out.print("added 6");
+		};
+		
 		System.out.println("+++++++"+Obstacle_list.size());
 		
 		
@@ -204,31 +224,52 @@ public class Game extends Application
         ball_obj.setX_pos((int)ball.getCenterX());
         ball_obj.setY_jump(200);
         //ball.relocate(0,10);
-       
-
-        Group root = new Group(imageV, b1, b2, starthand,Obstacle_list.get(0).getObstacle(),Obstacle_list.get(1).getObstacle(),ball);
+        
+        
+    	
+        Group root = new Group(imageV, b1, b2, starthand, Obstacle_list.get(1).getObstacle(), ball, Obstacle_list.get(0).getObstacle());
         Scene scene = new Scene(root, 1500, 800);
 
         System.out.println("Entering handler");
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
         	System.out.println("Enter pressed 1");
             if(key.getCode()==KeyCode.SHIFT) {
-            	 System.out.println(ball.getCenterY());
+            	System.out.println(ball.getCenterY());
             	ball_obj.move();
-
+            	if(ball_obj.gety_pos()<700) {
+                	System.out.print("\nin for updation");
+            		starthand.setY(starthand.getY()+10);
+            		Obstacle_list.get(0).sety_pos(Obstacle_list.get(0).gety_pos()+10);
+            		Obstacle_list.get(1).sety_pos(Obstacle_list.get(1).gety_pos()+10);
+        		}
+            	if(Obstacle_list.get(0).gety_pos()>=700) {
+        			
+        			root.getChildren().remove(Obstacle_list.get(0).getObstacle());
+        			Obstacle_list.remove(0);
+        			try {
+        				addObstacles();
+        				root.getChildren().add(Obstacle_list.get(1).getObstacle());
+        			} catch (Exception e) {
+        				// TODO Auto-generated catch block
+        				e.printStackTrace();
+        			}
+        		}
             }
-
-
-                //System.out.println(ball.getCenterY());
-
-              });
             
+               //System.out.println(ball.getCenterY());
 
+        });
+        //scene.setEventDispatcher(new EventDispatcher(Event e));
+          
+        
+        
+        
         stage.setTitle("Color Switch");
         stage.setScene(scene);
         stage.show();       
         
     }
+    
 
     void addscaletransition(Button h){
 
