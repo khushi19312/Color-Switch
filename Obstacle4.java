@@ -70,21 +70,21 @@ public class Obstacle4 extends Obstacles{
 
         images.add(image1);
         images.add(image2);
-        images.add(image3);
-        images.add(image4);
+       images.add(image3);
+       images.add(image4);
         images.add(image5);
-        images.add(image6);
+     images.add(image6);
         images.add(image7);
         images.add(image8);
-        images.add(image8);
+       images.add(image8);
 
     }
 
-    void move(ImageView imageView, List<Image> images) {
+    public void move(ImageView imageView, List<Image> images) {
 
     	Transition animation = new Transition() {
             {
-                setCycleDuration(Duration.millis(2000)); // total time for animation
+                setCycleDuration(Duration.millis(4000)); // total time for animation
                 setCycleCount(Animation.INDEFINITE);
             }
 
@@ -92,11 +92,13 @@ public class Obstacle4 extends Obstacles{
             protected void interpolate(double fraction) {
                 int index = (int) (fraction*(images.size()-1));
                 imageView.setImage(images.get(index));
+                
                 setOrientation(index);
+               // System.out.println(" line"+(index+1));
                 imageView.setX(getx_pos());
                 imageView.setY(gety_pos());
-                imageView.setFitHeight(320);
-                imageView.setFitWidth(320);
+                imageView.setFitHeight(360);
+                imageView.setFitWidth(360);
                 imageView.setPreserveRatio(true);
                 
             }
@@ -104,10 +106,34 @@ public class Obstacle4 extends Obstacles{
         animation.play();
     }
 
-	
-	
-	public void get_ypos() {
-		
+
+
+
+	@Override
+	public int getColours(int ballpos) {
+		// TODO Auto-generated method stub
+		if(getOrientation()==1 || getOrientation()==2)
+		    return 4;
+		else if(getOrientation()==3 || getOrientation()==4)
+		    return 2;
+		else if(getOrientation()==5 || getOrientation()==6)
+		    return 1;
+		else 
+		    return 4;
 	}
+
+
+
+
+	@Override
+	public int[] collision_pos(int ballpos) {
+		// TODO Auto-generated method stub
+		int[] limits=new int[2];
+		limits[0]=gety_pos()+17;
+		limits[1]=gety_pos()-17;
+		return limits;
+	}
+
+
 	
 }
