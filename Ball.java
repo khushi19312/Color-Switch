@@ -20,7 +20,7 @@ public class Ball extends Application{
 	  private Circle myball;
 	  private int x_pos;
 	  private int y_pos;
-	  private int y_jump;
+	  private int y_jump=100;
 	  private int color;
 	  private boolean presence;
 	  private static long serialVersionUID;
@@ -29,13 +29,17 @@ public class Ball extends Application{
       Timeline pre=null;
       
 	  public int gety_pos(){
-	    return getY_pos();
+	    return y_pos;
 	  }
-	  public void sety_pos(int x){
-	    setY_pos(x);
-	  }
+	  
+	
+	  
+	  public void setx_pos(int x){
+		    myball.setCenterX(x);
+		    x_pos=x;
+		  }
 	  public void increasey_jump(int y){
-	    setY_pos(getY_pos() + y);
+	    y_jump+=y;
 	  }
 	  public void change_colour(int c){
 	    color = c;
@@ -65,7 +69,7 @@ public class Ball extends Application{
          		 public void handle(ActionEvent e)
          		 {
          		myball.setCenterY(myball.getCenterY()-dist);
-         		setY_pos((int)myball.getCenterY());
+         		sety_pos((int)myball.getCenterY());
          		dist-=gr;
          		//if(dist>0)System.out.println("************up***********");
          		//else
@@ -90,30 +94,24 @@ public class Ball extends Application{
 	public Circle getMyball() {
 		return myball;
 	}
-	public void setMyball(Circle myball) {
-		this.myball = myball;
-	}
-	public int getY_pos() {
-		return y_pos;
-	}
-	public void setY_pos(int y_pos) {
-		this.y_pos = y_pos;
-	}
-	public int getX_pos() {
-		return x_pos;
-	}
-	public void setX_pos(int x_pos) {
-		this.x_pos = x_pos;
-	}
-	public int getY_jump() {
-		return y_jump;
-	}
-	public void setY_jump(int y_jump) {
-		this.y_jump = y_jump;
-	}
+	
 	@Override
 	public void start(Stage arg0) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
+	public void setMyball(Circle ball) {
+		// TODO Auto-generated method stub
+		myball=ball;
+	}
+
+
+
+	public void sety_pos(int i) {
+		// TODO Auto-generated method stub
+		myball.setCenterY(i);
+	    y_pos=i;
+	}
+
+
 	}
