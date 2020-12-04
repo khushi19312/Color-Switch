@@ -71,7 +71,7 @@ public class Obstacle1 extends Obstacles{
 
     }
 
-    void move(ImageView br, List<Image> bubble) {
+    public void move(ImageView br, List<Image> bubble) {
 
         Transition bubblerotate = new Transition() {
             {
@@ -82,15 +82,15 @@ public class Obstacle1 extends Obstacles{
             @Override
             protected void interpolate(double fraction) {
                 int index = (int) (fraction*(bubble.size()-1));
-                
+                setOrientation(index);
                 br.setImage(bubble.get(index));
                 //setDelay(2000);
                 setOrientation(index);
                 //System.out.println(getOrientation());
                 br.setX(getx_pos()+100);
                 br.setY(gety_pos());
-                br.setFitHeight(170);
-                br.setFitWidth(170);
+                br.setFitHeight(220);
+                br.setFitWidth(220);
                 br.setPreserveRatio(true);
             }
         };
@@ -101,5 +101,17 @@ public class Obstacle1 extends Obstacles{
 	
 	public void get_ypos() {
 		
+	}
+
+	@Override
+	public int[] collision_pos(int ballpos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getColours(int ballpos) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
