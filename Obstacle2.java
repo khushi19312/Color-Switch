@@ -77,7 +77,7 @@ public class Obstacle2 extends Obstacles{
 
     }
 
-    void move(ImageView s, List<Image> sq) {
+    public void move(ImageView s, List<Image> sq) {
 
     	Transition squarerotate = new Transition() {
             {
@@ -92,8 +92,8 @@ public class Obstacle2 extends Obstacles{
                 setOrientation(index);
                 s.setX(getx_pos()+100);
                 s.setY(gety_pos());
-                s.setFitHeight(230);
-                s.setFitWidth(230);
+                s.setFitHeight(280);
+                s.setFitWidth(280);
                 s.setPreserveRatio(true);
             }
 
@@ -105,6 +105,18 @@ public class Obstacle2 extends Obstacles{
 	
 	public void get_ypos() {
 		
+	}
+
+	@Override
+	public int[] collision_pos(int ballpos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getColours(int ballpos) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }
