@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 
-public class Obstacles extends Application {
+public abstract class Obstacles extends Application {
 	private int x_pos=570;
 	private int y_pos;
 	private String type;
@@ -32,15 +32,13 @@ public class Obstacles extends Application {
 	private static long serialVersionUID;
 	private ImageView obstacle;
 	
-	public void move() {
-		
-	}
-	public void create() {
-		
-	}
+	public abstract void move(ImageView imageView, List<Image> images) ;
+	public abstract void create(List<Image> images) throws FileNotFoundException;
 	public int getColour_ypos() {
 		return 1;
 	}
+	
+	public abstract int[] collision_pos(int ballpos);
 	public int getx_pos() {
 		return x_pos;
 	}
@@ -53,9 +51,8 @@ public class Obstacles extends Application {
 	public void sety_pos(int x) {
 		y_pos = x;
 	}
-	public List<Integer> getColours(){
-		return colors;
-	}
+	public abstract int getColours(int ballpos);
+	
 	public void setColours(List<Integer> l) {
 		
 	}
