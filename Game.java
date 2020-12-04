@@ -219,10 +219,10 @@ public class Game extends Application
             	ball_obj.move();
             	if(ball_obj.gety_pos()<700) {
               //  	System.out.print("\nin for updation");
-            		starthand.setY(starthand.getY());
-            		Obstacle_list.get(0).sety_pos(Obstacle_list.get(0).gety_pos());
-            		Obstacle_list.get(1).sety_pos(Obstacle_list.get(1).gety_pos());
-            		ball_obj.sety_pos(ball_obj.gety_pos());
+            		starthand.setY(starthand.getY()+30);
+            		Obstacle_list.get(0).sety_pos(Obstacle_list.get(0).gety_pos()+30);
+            		Obstacle_list.get(1).sety_pos(Obstacle_list.get(1).gety_pos()+30);
+            		ball_obj.sety_pos(ball_obj.gety_pos()+30);
         		}
             	if(Obstacle_list.get(0).gety_pos()>=700 && checking==false) {
         			
