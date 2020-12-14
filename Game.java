@@ -58,7 +58,8 @@ public class Game extends Application
 		
 		
 		Obstacle_list = new ArrayList<Obstacles>();
-		Obstacle_list.add(new Obstacle4(600));
+		Obstacle_list.add(new Obstacle2(400));
+		System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
 		addObstacles();
 		
 		
@@ -122,8 +123,9 @@ public class Game extends Application
 	}
 	
 	public void addObstacles() throws Exception
-	{
-		int prev_y = Obstacle_list.get(0).gety_pos()-500;
+	{	System.out.print("\n Adding obstacles");
+		int prev_y = Obstacle_list.get(0).gety_pos()-600;
+		System.out.print(" "+prev_y);
 		int no=getRandom();
 		//System.out.println(no);
 		if(no==1){
@@ -218,23 +220,36 @@ public class Game extends Application
             	//System.out.println(ball.getCenterY());
             	ball_obj.move();
             	if(ball_obj.gety_pos()<700) {
-              //  	System.out.print("\nin for updation");
-            		starthand.setY(starthand.getY()+30);
-            		Obstacle_list.get(0).sety_pos(Obstacle_list.get(0).gety_pos()+30);
-            		Obstacle_list.get(1).sety_pos(Obstacle_list.get(1).gety_pos()+30);
-            		ball_obj.sety_pos(ball_obj.gety_pos()+30);
+                	System.out.print("\nin for updation");
+                	System.out.print("\n"+Obstacle_list.get(0).gety_pos()+" ");
+                	//System.out.print(Obstacle_list.get(1).gety_pos()+" ");
+                	System.out.print("\n"+Obstacle_list.get(0).gety_gpos()+" ");
+                	//System.out.print(Obstacle_list.get(1).gety_gpos()+" ");
+            		starthand.setY(starthand.getY()+20);
+            		Obstacle_list.get(0).sety_gpos(Obstacle_list.get(0).gety_pos()+20);
+            		if(Obstacle_list.size()==2)
+            			Obstacle_list.get(1).sety_gpos(Obstacle_list.get(1).gety_pos()+20);
+            		ball_obj.sety_pos(ball_obj.gety_pos()+20);
         		}
-            	if(Obstacle_list.get(0).gety_pos()>=700 && checking==false) {
+            	if(Obstacle_list.get(0).gety_pos()>=400) {
         			
-        			root.getChildren().remove(Obstacle_list.get(0).getObstacle());
-        			Obstacle_list.remove(0);
         			try {
-        				addObstacles();
-        				root.getChildren().add(Obstacle_list.get(1).getObstacle());
+        				if(Obstacle_list.size()==1) {
+        					addObstacles();
+        					root.getChildren().add(Obstacle_list.get(1).getObstacle());
+        					System.out.print("\nAdded 0");
+        				}
         			} catch (Exception e) {
         				// TODO Auto-generated catch block
         				e.printStackTrace();
         			}
+        		}
+            	if(Obstacle_list.get(0).gety_pos()>=900) {
+        			
+        			root.getChildren().remove(Obstacle_list.get(0).getObstacle());
+        			Obstacle_list.remove(0);
+        			System.out.print("\nRemoved 1");
+        			
         		}
             }
             
