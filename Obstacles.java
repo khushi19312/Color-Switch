@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -30,10 +31,10 @@ public abstract class Obstacles extends Application {
 	protected List <Integer> colors;
 	private int speed;
 	private static long serialVersionUID;
-	private ImageView obstacle;
+	private Group obstacle;
 	
-	public abstract void move(ImageView imageView, List<Image> images) ;
-	public abstract void create(List<Image> images) throws FileNotFoundException;
+	public abstract void move(Group g, List<Rectangle> images) ;
+	public abstract void create(List<Rectangle> images) throws FileNotFoundException;
 	public int getColour_ypos() {
 		return 1;
 	}
@@ -45,11 +46,24 @@ public abstract class Obstacles extends Application {
 	public int gety_pos(){
 		return y_pos;
 	}
+	public int gety_gpos(){
+		return (int)(obstacle.getLayoutY());
+	}
 	public void setx_pos(int x) {
 		x_pos = x;
+		
 	}
 	public void sety_pos(int x) {
 		y_pos = x;
+		
+	}
+	public void setx_gpos(int x) {
+		x_pos = x;
+		obstacle.setLayoutX(x);
+	}
+	public void sety_gpos(int x) {
+		y_pos = x;
+		obstacle.setLayoutY(x);
 	}
 	public abstract int getColours(int ballpos);
 	
@@ -80,10 +94,10 @@ public abstract class Obstacles extends Application {
 		// TODO Auto-generated method stub
 		
 	}
-	public ImageView getObstacle() {
+	public Group getObstacle() {
 		return obstacle;
 	}
-	public void setObstacle(ImageView obstacle) {
+	public void setObstacle(Group obstacle) {
 		this.obstacle = obstacle;
 	}
 		
