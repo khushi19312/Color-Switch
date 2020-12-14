@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -24,13 +25,7 @@ public class Obstacle3 extends Obstacles{
 	
 	
 
-	Obstacle3(int pos) throws Exception
-	{
-		sety_pos(pos);
-		setx_pos(650);
-		 start();
-
-	}
+	
 	
 	/*private int x_pos;
 	private int y_pos;
@@ -45,67 +40,80 @@ public class Obstacle3 extends Obstacles{
 		start(stage);
 	}*/
 	
+	List<Rectangle> t;
+	
+	Obstacle3(int pos) throws Exception
+	{
+		t= new ArrayList<Rectangle>();
+		sety_pos(pos);
+		//setx_pos(650);
+		start();
 
+	}
+	
     public void start() throws Exception{
 
         
 
-        ImageView imgView = new ImageView();
-        List<Image> images2 = new ArrayList<>();
-        
-        create(images2);
-        move(imgView, images2);
-        setObstacle(imgView);
+    	create(t);
+        Group group = new Group(t.get(0), t.get(1), t.get(2));       
+        move(group, t);         
+        setObstacle(group);
 
         
     }
 
-    public void create(List<Image> images2) throws FileNotFoundException {
-    	Image img1 = new Image("AP\\ring1.png");
-        Image img2 = new Image("AP\\ring2.png");
-        Image img3 = new Image("AP\\ring3.png");
-        Image img4 = new Image("AP\\ring4.png");
-        Image img5 = new Image("AP\\ring5.png");
-        Image img6 = new Image("AP\\ring6.png");
-        Image img7 = new Image("AP\\ring7.png");
-        Image img8 = new Image("AP\\ring8.png");
-
-
-
-       images2.add(img1);
-       images2.add(img2);
-        images2.add(img3);
-       images2.add(img4);
-        images2.add(img5);
-        images2.add(img6);
-       images2.add(img7);
-        images2.add(img8);
-        images2.add(img8);
+    public void create(List<Rectangle> t) throws FileNotFoundException {
+    	Rectangle rect1= new Rectangle();
+        rect1.setX(690); 
+		rect1.setY(gety_pos()-100); 
+		rect1.setWidth(20); 
+		rect1.setHeight(250); 
+		rect1.setArcWidth(30.0); 
+		rect1.setArcHeight(20.0);  
+		rect1.setRotate(32);
+		rect1.setFill(Color.web("#FF0181"));
+        
+		Rectangle rect2= new Rectangle();
+		rect2.setX(812); 
+		rect2.setY(gety_pos()-100); 
+		rect2.setWidth(20); 
+		rect2.setHeight(250); 
+		rect2.setArcWidth(30.0); 
+		rect2.setArcHeight(20.0);  
+		rect2.setRotate(-32);
+		rect2.setFill(Color.web("#900DFF"));
+		
+        Rectangle rect3= new Rectangle();
+        rect3.setX(628); 
+		rect3.setY(gety_pos()+116.205); 
+		rect3.setWidth(265); 
+		rect3.setHeight(20); 
+		rect3.setArcWidth(30.0); 
+		rect3.setArcHeight(20.0);  
+		rect3.setFill(Color.web("FAE100"));
+        
+        
+        
+		t.add(rect1);
+        t.add(rect2);
+        t.add(rect3);
 
     }
 
-    public void move(ImageView imgView, List<Image> images2) {
+    public void move(Group g, List<Rectangle> sq) {
 
-    	Transition animation2 = new Transition() {
-            {
-                setCycleDuration(Duration.millis(4000)); // total time for animation
-                setCycleCount(Animation.INDEFINITE);
-            }
-
-            @Override
-            protected void interpolate(double fraction) {
-                int index = (int) (fraction*(images2.size()-1));
-                imgView.setImage(images2.get(index));
-                setOrientation(index);
-               // System.out.println("ring"+(index+1));
-                imgView.setX(getx_pos());
-                imgView.setY(gety_pos());
-                imgView.setFitHeight(220);
-                imgView.setFitWidth(220);
-                imgView.setPreserveRatio(true);
-            }
-        };
-        animation2.play();
+    	RotateTransition rotate = new RotateTransition(); 
+        
+        rotate.setDuration(Duration.millis(4000));
+        rotate.setCycleCount(Animation.INDEFINITE);
+    	rotate.setByAngle(360);
+    	rotate.setAutoReverse(false);
+    	rotate.setInterpolator(Interpolator.LINEAR);
+    	//rotate.pivotXProperty().bind(195);
+    	//rotate.pivotYProperty().bind(400);
+    	rotate.setNode(g);
+    	rotate.play();
     }
 
 	@Override
