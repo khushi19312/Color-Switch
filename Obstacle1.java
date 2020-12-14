@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -34,67 +35,82 @@ public class Obstacle1 extends Obstacles{
 	/*Obstacle1(Stage stage) throws Exception{
 		start(stage);
 	}*/
+	List<Rectangle> c;
 	
 	Obstacle1(int pos) throws Exception
 	{
-		 
+		 c = new ArrayList<Rectangle>();
          sety_pos(pos);
          start();
 	}
 
     public void start() throws Exception{
         
-        ImageView br = new ImageView();
-        List<Image> bubble = new ArrayList<>();
+    	
         
-        create(bubble);
-        move(br, bubble);
-        setObstacle(br);
+        create(c);
+        Group group = new Group(c.get(0), c.get(1), c.get(2), c.get(3));       
+        move(group, c);         
+        setObstacle(group);
 
     }
 
-    public void create(List<Image> bubble) throws FileNotFoundException {
-        Image bubblering1 = new Image("AP\\bubblering1.png");//orientation 1
-        Image bubblering2 = new Image("AP\\bubblering2.png");//orientation 2
-        Image bubblering3 = new Image("AP\\bubblering3.png");//3
-        Image bubblering4 = new Image("AP\\bubblering4.png");//4
-        Image bubblering5 = new Image("AP\\bubblering5.png");//5
-        Image bubblering6 = new Image("AP\\bubblering6.png");//6
-
-        bubble.add(bubblering1);
-        bubble.add(bubblering2);
-        bubble.add(bubblering3);
-        bubble.add(bubblering4);
-        bubble.add(bubblering5);
-        bubble.add(bubblering6);
-        bubble.add(bubblering6);
-
+    public void create(List<Rectangle> c) throws FileNotFoundException {
+    	Rectangle rect1= new Rectangle();
+        rect1.setX(680); 
+		rect1.setY(gety_pos()-90); 
+		rect1.setWidth(20); 
+		rect1.setHeight(100); 
+		rect1.setArcWidth(30.0); 
+		rect1.setArcHeight(20.0);  
+		rect1.setFill(Color.web("#FF0181"));
+        
+		Rectangle rect2= new Rectangle();
+		rect2.setX(590); 
+		rect2.setY(gety_pos()); 
+		rect2.setWidth(100); 
+		rect2.setHeight(20); 
+		rect2.setArcWidth(30.0); 
+		rect2.setArcHeight(20.0);  
+		rect2.setFill(Color.web("#900DFF"));
+		
+        Rectangle rect3= new Rectangle();
+        rect3.setX(690); 
+		rect3.setY(gety_pos()); 
+		rect3.setWidth(100); 
+		rect3.setHeight(20); 
+		rect3.setArcWidth(30.0); 
+		rect3.setArcHeight(20.0);  
+		rect3.setFill(Color.web("FAE100"));
+        
+        Rectangle rect4= new Rectangle();
+        rect4.setX(680); 
+		rect4.setY(gety_pos()); 
+		rect4.setWidth(20); 
+		rect4.setHeight(110); 
+		rect4.setArcWidth(30.0); 
+		rect4.setArcHeight(20.0);  
+		rect4.setFill(Color.web("#32DBF0"));
+        
+		c.add(rect1);
+        c.add(rect2);
+        c.add(rect3);
+        c.add(rect4);
     }
 
-    public void move(ImageView br, List<Image> bubble) {
+    public void move(Group g, List<Rectangle> sq) {
 
-        Transition bubblerotate = new Transition() {
-            {
-                setCycleDuration(Duration.millis(2000));
-                setCycleCount(Animation.INDEFINITE);
-            }
-
-            @Override
-            protected void interpolate(double fraction) {
-                int index = (int) (fraction*(bubble.size()-1));
-                setOrientation(index);
-                br.setImage(bubble.get(index));
-                //setDelay(2000);
-                setOrientation(index);
-                //System.out.println(getOrientation());
-                br.setX(getx_pos()+100);
-                br.setY(gety_pos());
-                br.setFitHeight(220);
-                br.setFitWidth(220);
-                br.setPreserveRatio(true);
-            }
-        };
-        bubblerotate.play();
+    	RotateTransition rotate = new RotateTransition(); 
+        
+        rotate.setDuration(Duration.millis(4000));
+        rotate.setCycleCount(Animation.INDEFINITE);
+    	rotate.setByAngle(-360);
+    	rotate.setAutoReverse(false);
+    	rotate.setInterpolator(Interpolator.LINEAR);
+    	//rotate.pivotXProperty().bind(195);
+    	//rotate.pivotYProperty().bind(400);
+    	rotate.setNode(g);
+    	rotate.play();
     }
 
 	
