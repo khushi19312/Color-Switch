@@ -1,37 +1,55 @@
 package application;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public class ColorWheel {
 
 	private int x_pos;
 	private int y_pos;
-	private List<Integer>colours;
+	
 	private long serialVersionUID;
+	ImageView star;
 	
-	
-	public int getx_pos()
+	ColorWheel(int pos)
 	{
+		Image i=new Image("AP\\colorwheel.png");
+	   star = new ImageView(i);
+	   star.setX(660);
+	   star.setY(50);
+	   star.setScaleX(0.25);
+	   star.setScaleY(0.25);
+	   sety_pos(pos);
+	   
+	}
+	public int getx_pos()
+	{return x_pos;
 		
 	}
 	public int gety_pos()
-	{
+	{return y_pos;
 		
 	}
 	public void setx_pos(int x)
 	{
-		
+		x_pos=x;
+		star.setX(x);
 	}
 	public void sety_pos(int y)
 	{
-		
+	y_pos=y;
+	star.setY(y);
 	}
-	public void setColours(List<Integer> l)
+	
+	
+		public int getColour()
 	{
-		
-	}
-	public int getColour()
-	{
-		
+			double f = Math.random()/Math.nextDown(1.0);
+		    double x = 1*(1.0 - f) + 4*f;
+		    return (int)x;
 	}
 }
