@@ -35,16 +35,18 @@ public class Game extends Application
 	private List<Obstacles> Obstacle_list;
 	//private Stars star_obj;
 	//private Stars next_nearest_star_obj;
-	private ColorWheel colorwheel_obj;
+	private ColorWheel colorwheel_obj1,colorwheel_obj2;
 	private HashMap<Integer,Color> colors;
 	private int currentScore;
 	private long serialVersionUID;
 	private static String[] args;
 	boolean checking=false;
-
+    int count=0;
+    Group root;
+    
 	Game(Stage stage) throws Exception
 	{
-		ball_obj=new Ball();
+	
 
 		colors=new HashMap();
 		Color purple=Color.rgb(117, 37, 212);
@@ -58,9 +60,14 @@ public class Game extends Application
 		
 		
 		Obstacle_list = new ArrayList<Obstacles>();
-		Obstacle_list.add(new Obstacle2(400));
-		System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
-		addObstacles();
+		
+		Obstacle_list.add(new Obstacle1(500));
+		count++;
+		Obstacle_list.add(new Obstacle1(100));
+		count++;
+		//System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
+		//addObstacles();
+		
 		
 		
 		start(stage);
@@ -71,6 +78,16 @@ public class Game extends Application
 	    	double f = Math.random()/Math.nextDown(1.0);
 	        double x = 1*(1.0 - f) + 4*f;
 	        return (int)x;
+
+	    }
+	 
+	 boolean getRandomboolean()
+	    {
+	    	double f = Math.random();
+	    	if(f>0.5)return true;
+	    	else
+	    		return false;
+	      
 
 	    }
 	 
@@ -124,7 +141,13 @@ public class Game extends Application
 	
 	public void addObstacles() throws Exception
 	{	System.out.print("\n Adding obstacles");
-		int prev_y = Obstacle_list.get(0).gety_pos()-600;
+	     int l=Obstacle_list.size();
+	     int prev_y=500;
+	     int sub=400;
+	     if(count>2)
+	    	 sub=500;
+	     if(l>0)
+		prev_y = Obstacle_list.get(l-1).gety_pos()-sub;
 		System.out.print(" "+prev_y);
 		int no=getRandom();
 		//System.out.println(no);
@@ -141,7 +164,25 @@ public class Game extends Application
 			//System.out.print("added 3");
 		}
 		
-		
+		if(true)
+		{
+			if(colorwheel_obj1==null && count>2)
+			{
+				colorwheel_obj1=new ColorWheel(prev_y-400);
+				root.getChildren().add(colorwheel_obj1.star);
+				
+			      
+					
+				
+			}
+			else if(colorwheel_obj2==null&& count>2)
+			{
+				colorwheel_obj2=new ColorWheel(prev_y-400);
+				root.getChildren().add(colorwheel_obj2.star);
+				
+				
+			}
+		}
 		//System.out.println("+++++++"+Obstacle_list.size());
 		
 		
@@ -202,15 +243,19 @@ public class Game extends Application
         
         int ballcolor=getRandom();
         Circle ball = new Circle(12,colors.get(ballcolor));
+        ball_obj=new Ball(colors);
 		ball_obj.setMyball(ball);
         ball_obj.sety_pos(700);
         ball_obj.setx_pos(750);
         ball_obj.change_colour(ballcolor);
+        ball.setTranslateZ(1);
         //ball.relocate(0,10);
         
         
     	
-        Group root = new Group(imageV, b1, b2, starthand, Obstacle_list.get(1).getObstacle(), Obstacle_list.get(0).getObstacle(),ball);
+        root = new Group(imageV, b1, b2, starthand,ball);
+        root.getChildren().add(Obstacle_list.get(0).getObstacle());
+        root.getChildren().add(Obstacle_list.get(1).getObstacle());
         Scene scene = new Scene(root, 1500, 800);
 
        // System.out.println("Entering handler");
@@ -219,73 +264,101 @@ public class Game extends Application
             if(key.getCode()==KeyCode.SHIFT) {
             	//System.out.println(ball.getCenterY());
             	ball_obj.move();
-            	if(ball_obj.gety_pos()<700) {
-                	System.out.print("\nin for updation");
-                	System.out.print("\n"+Obstacle_list.get(0).gety_pos()+" ");
-                	//System.out.print(Obstacle_list.get(1).gety_pos()+" ");
-                	System.out.print("\n"+Obstacle_list.get(0).gety_gpos()+" ");
-                	//System.out.print(Obstacle_list.get(1).gety_gpos()+" ");
-            		starthand.setY(starthand.getY()+20);
-            		Obstacle_list.get(0).sety_gpos(Obstacle_list.get(0).gety_pos()+20);
-            		if(Obstacle_list.size()==2)
-            			Obstacle_list.get(1).sety_gpos(Obstacle_list.get(1).gety_pos()+20);
-            		ball_obj.sety_pos(ball_obj.gety_pos()+20);
+ 
+            	if(ball_obj.gety_pos()<600) {
+                	
+            		starthand.setY(starthand.getY()+30);
+            		
+            		
+            		checking=true;
+            		if(Obstacle_list.size()>=1)
+            			{
+            			for(int i=0;i<Obstacle_list.size();i++)
+            			   Obstacle_list.get(i).sety_pos(Obstacle_list.get(i).gety_pos()+30);
+            			}
+            		
+                   if(colorwheel_obj1!=null)
+                	   colorwheel_obj1.sety_pos(colorwheel_obj1.gety_pos()+30);
+                   if(colorwheel_obj2!=null)
+                	   colorwheel_obj2.sety_pos(colorwheel_obj2.gety_pos()+30);
+                   
+            		ball_obj.sety_pos(ball_obj.gety_pos()+30);
+            		checking=false;
+            			}
+            		
         		}
-            	if(Obstacle_list.get(0).gety_pos()>=400) {
-        			
-        			try {
-        				if(Obstacle_list.size()==1) {
-        					addObstacles();
-        					root.getChildren().add(Obstacle_list.get(1).getObstacle());
-        					System.out.print("\nAdded 0");
-        				}
-        			} catch (Exception e) {
-        				// TODO Auto-generated catch block
-        				e.printStackTrace();
-        			}
-        		}
-            	if(Obstacle_list.get(0).gety_pos()>=900) {
-        			
-        			root.getChildren().remove(Obstacle_list.get(0).getObstacle());
-        			Obstacle_list.remove(0);
-        			System.out.print("\nRemoved 1");
-        			
-        		}
-            }
+            	
+            
             
                //System.out.println(ball.getCenterY());
 
         });
         //scene.setEventDispatcher(new EventDispatcher(Event e));
          
-			        Timeline checkExitCondition = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
+			   Timeline checkExitCondition = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
 			
 			   @Override
 			   public void handle(ActionEvent event) {
-				   checking=true;
-			       if(ball_obj.gety_pos()>800)
-			    	   System.out.println("******************EXIT_OF_BOUNDS************************");
-			       for(int i=0;i<Obstacle_list.size();i++)
-			       {
-			    	   
-			    	   //System.out.println("Size: "+Obstacle_list.size()+" present "+i);
-			    	  int[] limits=Obstacle_list.get(i).collision_pos(ball_obj.gety_pos());
-			    	  //if(limits!=null)
-			    	  //System.out.println("length: "+limits.length);
-			    	  if(limits!=null && limits.length==2)
-			    	      {if(ball_obj.gety_pos()<=limits[0] && ball_obj.gety_pos()>=limits[1] && ball_obj.get_colour()!=Obstacle_list.get(i).getColours(ball_obj.gety_pos()))
-			    			  System.out.println("******************EXIT_LINE************************");}
-			    	  else if(limits!=null&& limits.length==4)
-			    	      {
-			    		  if(((ball_obj.gety_pos()<=limits[0] && ball_obj.gety_pos()>=limits[1]) ||(ball_obj.gety_pos()<=limits[2] && ball_obj.gety_pos()>=limits[3])) && ball_obj.get_colour()!=Obstacle_list.get(i).getColours(ball_obj.gety_pos()))
-			    			  System.out.println("******************EXIT_RING************************");
-			    		 // System.out.println("checking");
-			    	      }
-			    	    	  
-			    	  
-			       }
-			       
-			       checking=false;
+				   
+				   if(colorwheel_obj1!=null)
+				   {
+					   if(ball_obj.gety_pos()-100<=colorwheel_obj1.gety_pos())
+					   {
+						   root.getChildren().remove(colorwheel_obj1.star);
+						   colorwheel_obj1=null;
+						   ball_obj.change_colour(getRandom());
+					   }
+				   }
+				   
+				   if(colorwheel_obj2!=null)
+				   {
+					   if(ball_obj.gety_pos()-100<=colorwheel_obj2.gety_pos())
+					   {
+						   root.getChildren().remove(colorwheel_obj2.star);
+						   colorwheel_obj2=null;
+						   ball_obj.change_colour(getRandom());
+					   }
+				   }
+				   
+				  System.out.println("Obstacles in list******"+Obstacle_list.size()+"*************");
+				  for(int i=0;i<Obstacle_list.size();i++)
+					     System.out.println(Obstacle_list.get(i).gety_pos()+Obstacle_list.get(i).getType());
+				  
+				  if(Obstacle_list.get(0).gety_pos()>=850 && checking==false && count>2) {
+	        			System.out.println("***********HERE********************");
+	        			
+	        			System.out.print("\nRemoved 1");
+	        			try {
+							addObstacles();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						root.getChildren().add(Obstacle_list.get(Obstacle_list.size()-1).getObstacle());
+						System.out.print("\nAdded 0");
+						count++;
+						root.getChildren().remove(Obstacle_list.get(0).getObstacle());
+	        			Obstacle_list.remove(0);
+					}	
+				  else if(Obstacle_list.get(0).gety_pos()>=740 && checking==false && count<=2) {
+	        			System.out.println("***********HERE********************");
+	        			
+	        			System.out.print("\nRemoved 1");
+	        			try {
+							addObstacles();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						root.getChildren().add(Obstacle_list.get(Obstacle_list.size()-1).getObstacle());
+						System.out.print("\nAdded 0");
+						count++;
+						root.getChildren().remove(Obstacle_list.get(0).getObstacle());
+	        			Obstacle_list.remove(0);
+					}	
+					
+					
+					
 			   }
 			}));
 			checkExitCondition.setCycleCount(Timeline.INDEFINITE);
