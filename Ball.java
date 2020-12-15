@@ -1,5 +1,7 @@
 package application;
 
+import java.util.HashMap;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -18,8 +20,9 @@ import javafx.util.Duration;
 
 public class Ball extends Application{
 	  private Circle myball;
+	  private HashMap<Integer,Color> colors;
 	  private int x_pos;
-	  private int y_pos;
+	  private int y_pos=700;
 	  private int y_jump=100;
 	  private int color;
 	  private boolean presence;
@@ -28,6 +31,10 @@ public class Ball extends Application{
       float gr;
       Timeline pre=null;
       
+      Ball(HashMap<Integer,Color> colors)
+      {
+    	  this.colors=colors;
+      }
 	  public int gety_pos(){
 	    return y_pos;
 	  }
@@ -43,6 +50,8 @@ public class Ball extends Application{
 	  }
 	  public void change_colour(int c){
 	    color = c;
+	   // if(colors==null)System.out.println("NULL");
+	    myball.setFill(colors.get(c));
 	  }
 	  public int get_colour(){
 	    return color;
