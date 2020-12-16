@@ -35,11 +35,10 @@ public class Obstacle1 extends Obstacles{
 	/*Obstacle1(Stage stage) throws Exception{
 		start(stage);
 	}*/
-	List<Rectangle> c;
+	List<Rectangle> c=new ArrayList();
 	
 	Obstacle1(int pos) throws Exception
 	{
-		 c = new ArrayList<Rectangle>();
          sety_pos(pos);
          start();
 	}
@@ -49,7 +48,8 @@ public class Obstacle1 extends Obstacles{
     	
         
         create(c);
-        Group group = new Group(c.get(0), c.get(1), c.get(2), c.get(3));       
+        Group group = new Group(c.get(0), c.get(1), c.get(2), c.get(3));     
+        setType("cross");
         move(group, c);         
         setObstacle(group);
 
@@ -87,7 +87,7 @@ public class Obstacle1 extends Obstacles{
         rect4.setX(680); 
 		rect4.setY(gety_pos()); 
 		rect4.setWidth(20); 
-		rect4.setHeight(110); 
+		rect4.setHeight(100); 
 		rect4.setArcWidth(30.0); 
 		rect4.setArcHeight(20.0);  
 		rect4.setFill(Color.web("#32DBF0"));
@@ -115,9 +115,7 @@ public class Obstacle1 extends Obstacles{
 
 	
 	
-	public void get_ypos() {
-		
-	}
+	
 
 	@Override
 	public int[] collision_pos(int ballpos) {
