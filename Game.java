@@ -20,12 +20,16 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -33,8 +37,9 @@ public class Game extends Application
 {
 	private Ball ball_obj;
 	private List<Obstacles> Obstacle_list;
-	//private Stars star_obj;
-	//private Stars next_nearest_star_obj;
+	private Star star_obj1;
+	private Star star_obj2;
+	private int value;
 	private ColorWheel colorwheel_obj1,colorwheel_obj2;
 	private HashMap<Integer,Color> colors;
 	private int currentScore;
@@ -43,22 +48,26 @@ public class Game extends Application
 	boolean checking=false;
     int count=0;
     Group root;
-    
+    Label score;
 	Game(Stage stage) throws Exception
 	{
 	
-
-		colors=new HashMap();
+		value=0;
+		colors=new HashMap<Integer, Color>();
 		Color purple=Color.rgb(117, 37, 212);
 		Color pink=Color.rgb(255, 0, 128);
 		Color blue=Color.rgb(53, 226, 242);
+		Color white=Color.rgb(255,255, 255);
 		Color yellow=Color.rgb(245, 223, 15);
 		colors.put(1,purple);//purple
 		colors.put(2,pink);//pink
 		colors.put(3,blue);//blue
 		colors.put(4,yellow);//yellow
-		
-		
+		score = new Label("Score: ");
+		score.setTextFill(white);
+		score.setLayoutX(850);
+		score.setLayoutY(40);
+		score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 		Obstacle_list = new ArrayList<Obstacles>();
 		
 		Obstacle_list.add(new Obstacle1(500));
@@ -123,7 +132,7 @@ public class Game extends Application
 	}
 	public void updateCurrentScore()
 	{
-		
+		score.setText("Score: "+value*5);
 	}
 	public void check_obstacle()
 	{
@@ -164,9 +173,9 @@ public class Game extends Application
 			//System.out.print("added 3");
 		}
 		
-		if(true)
+		if(getRandomboolean())
 		{
-			if(colorwheel_obj1==null && count>2)
+			if(colorwheel_obj1==null && count>1)
 			{
 				colorwheel_obj1=new ColorWheel(prev_y-400);
 				root.getChildren().add(colorwheel_obj1.star);
@@ -175,11 +184,40 @@ public class Game extends Application
 					
 				
 			}
-			else if(colorwheel_obj2==null&& count>2)
+			else if(colorwheel_obj2==null&& count>1)
 			{
 				colorwheel_obj2=new ColorWheel(prev_y-400);
 				root.getChildren().add(colorwheel_obj2.star);
 				
+				
+			}
+		}
+		
+		int reduce=0;
+		if(no==2 && count>3)
+			reduce=230;
+		else 
+			reduce=150;
+		
+		if(true)
+		{
+			if(star_obj1==null && count>1&& no!=1)
+			{
+				star_obj1=new Star(prev_y-reduce);
+				root.getChildren().add(star_obj1.star);
+				
+			     if(no==3)
+			    	 star_obj1.setPos_x(star_obj1.getPos_x()+10);
+					
+				
+			}
+			else if(star_obj2==null&& count>1 && no!=1)
+			{
+				star_obj2=new Star(prev_y-reduce);
+				root.getChildren().add(star_obj2.star);
+				
+				   if(no==3)
+				    	 star_obj1.setPos_x(star_obj1.getPos_x()+10);
 				
 			}
 		}
@@ -253,7 +291,7 @@ public class Game extends Application
         
         
     	
-        root = new Group(imageV, b1, b2, starthand,ball);
+        root = new Group(imageV, b1, b2, starthand,ball,score);
         root.getChildren().add(Obstacle_list.get(0).getObstacle());
         root.getChildren().add(Obstacle_list.get(1).getObstacle());
         Scene scene = new Scene(root, 1500, 800);
@@ -281,6 +319,11 @@ public class Game extends Application
                 	   colorwheel_obj1.sety_pos(colorwheel_obj1.gety_pos()+30);
                    if(colorwheel_obj2!=null)
                 	   colorwheel_obj2.sety_pos(colorwheel_obj2.gety_pos()+30);
+                   
+                   if(star_obj1!=null)
+                	   star_obj1.setPos_y(star_obj1.getPos_y()+30);
+                   if(star_obj2!=null)
+                	   star_obj2.setPos_y(star_obj2.getPos_y()+30);
                    
             		ball_obj.sety_pos(ball_obj.gety_pos()+30);
             		checking=false;
@@ -317,6 +360,29 @@ public class Game extends Application
 						   root.getChildren().remove(colorwheel_obj2.star);
 						   colorwheel_obj2=null;
 						   ball_obj.change_colour(getRandom());
+					   }
+				   }
+				   
+				   if(star_obj1!=null)
+				   {
+					   if(ball_obj.gety_pos()-100<=star_obj1.getPos_y())
+					   {
+						   root.getChildren().remove(star_obj1.star);
+						   star_obj1=null;
+						   value++;
+						   updateCurrentScore();
+					   }
+				   }
+				   
+				   if(star_obj2!=null)
+				   {
+					   if(ball_obj.gety_pos()-100<=star_obj2.getPos_y())
+					   {
+						   root.getChildren().remove(star_obj2.star);
+						   star_obj2=null;
+						  value++;
+						  updateCurrentScore();
+						  
 					   }
 				   }
 				   
