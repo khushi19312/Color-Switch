@@ -57,7 +57,7 @@ public abstract class Obstacles extends Application {
 		if(obstacle!=null)
 		obstacle.setLayoutY(x);
 	}
-	
+	public abstract ArrayList<Rectangle> getShape();
 	
 	public abstract int getColours(int ballpos);
 	
