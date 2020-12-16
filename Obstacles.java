@@ -24,7 +24,7 @@ import java.util.List;
 import javafx.application.Application;
 
 public abstract class Obstacles extends Application {
-	private int x_pos=570;
+	private int x_pos=0;
 	private int y_pos;
 	private String type;
 	private int orientation;
@@ -46,25 +46,19 @@ public abstract class Obstacles extends Application {
 	public int gety_pos(){
 		return y_pos;
 	}
-	public int gety_gpos(){
-		return (int)(obstacle.getLayoutY());
-	}
+
 	public void setx_pos(int x) {
 		x_pos = x;
-		
+		if(obstacle!=null)
+		obstacle.setLayoutX(x);
 	}
 	public void sety_pos(int x) {
 		y_pos = x;
-		
-	}
-	public void setx_gpos(int x) {
-		x_pos = x;
-		obstacle.setLayoutX(x);
-	}
-	public void sety_gpos(int x) {
-		y_pos = x;
+		if(obstacle!=null)
 		obstacle.setLayoutY(x);
 	}
+	
+	
 	public abstract int getColours(int ballpos);
 	
 	public void setColours(List<Integer> l) {
@@ -99,6 +93,10 @@ public abstract class Obstacles extends Application {
 	}
 	public void setObstacle(Group obstacle) {
 		this.obstacle = obstacle;
+	    obstacle.setLayoutX(x_pos);
+		obstacle.setLayoutY(y_pos);
+		System.out.println("Tpos of obstacle is "+y_pos);
+		
 	}
 		
 	//}
