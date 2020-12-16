@@ -19,8 +19,14 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+
 
 public class Main extends Application 
 {
@@ -34,6 +40,200 @@ public class Main extends Application
 		private HashMap<Integer,Game> prev_games;
 		private int highScore;
 		private static String[] args;
+		 static int highscore=0;
+	    static Image score;
+	    static ImageView s;
+	    static Text t1 = new Text();
+        static Scene homescene;
+	    static Image bestscore;
+	    static int gamescore=0;
+	    static ImageView bs;
+	    static Text t2 = new Text();
+	    static Text t3 = new Text();
+	    static Text t4 = new Text();
+	    
+	    public static ImageView addstarcountend() throws FileNotFoundException {
+
+	        Image i2 = new Image("AP\\stars.png");
+	        ImageView iw2 = new ImageView(i2);
+	        iw2.setX(1010);
+	        iw2.setY(20);
+	        iw2.setFitHeight(60);
+	        iw2.setFitWidth(90);
+
+	        return iw2;
+
+	    }
+	    public static Button addrestartbuttonend() throws FileNotFoundException {
+	        Image i = new Image("AP\\loadbutton.png");
+	        ImageView iw = new ImageView(i);
+	        //iw.setX(710);
+	        //iw.setY(445);
+	        iw.setFitHeight(100);
+	        iw.setFitWidth(100);
+	        Button b = new Button("", iw);
+	        b.setLayoutX(735);
+	        b.setLayoutY(470);
+	        b.setPadding(new Insets(-25));
+	        return b;
+	    }
+	    public static Button addstarbuttonend() throws FileNotFoundException {
+	        Image i = new Image("AP\\star.png");
+	        ImageView iw = new ImageView(i);
+	        //iw.setX(725);
+	        //iw.setY(610);
+	        iw.setFitHeight(70);
+	        iw.setFitWidth(70);
+	        Button b = new Button("", iw);
+	        b.setLayoutX(750);
+	        b.setLayoutY(635);
+	        b.setPadding(new Insets(-25));
+
+	        return b;
+	    }
+	    public static Button addhomebuttonend() throws FileNotFoundException {
+
+	        Image i4 = new Image("AP\\homebutton.png");
+	        ImageView iw4 = new ImageView(i4);
+	        //iw4.setX(450);
+	        //iw4.setY(20);
+	        iw4.setFitHeight(60);
+	        iw4.setFitWidth(60);
+	        Button b4 = new Button("", iw4);
+	        b4.setLayoutX(470);
+	        b4.setLayoutY(60);
+	        b4.setPadding(new Insets(-25));
+	        return b4;
+
+
+	    }
+
+	    public static void addrotatingcirclesend(ImageView iw, ImageView iw2, ImageView iw3) throws FileNotFoundException {
+	        iw.setX(690);
+	        iw.setY(425);
+	        iw.setFitHeight(140);
+	        iw.setFitWidth(140);
+	        iw.setPreserveRatio(true);
+
+	        RotateTransition rt = new RotateTransition(Duration.millis(1500), iw);
+	        rt.setByAngle(360);
+	        rt.setCycleCount(Animation.INDEFINITE);
+	        rt.play();
+
+	        iw2.setX(670);
+	        iw2.setY(405);
+	        iw2.setFitHeight(180);
+	        iw2.setFitWidth(180);
+	        iw2.setPreserveRatio(true);
+
+	        RotateTransition r = new RotateTransition(Duration.millis(1500), iw2);
+	        r.setByAngle(-360);
+	        r.setCycleCount(Animation.INDEFINITE);
+	        r.play();
+
+	        iw3.setX(705);
+	        iw3.setY(595);
+	        iw3.setFitHeight(110);
+	        iw3.setFitWidth(110);
+	        iw3.setPreserveRatio(true);
+
+	        RotateTransition ro = new RotateTransition(Duration.millis(1500), iw3);
+	        ro.setByAngle(-360);
+	        ro.setCycleCount(Animation.INDEFINITE);
+	        ro.play();
+
+	    }
+	    static void addscaletransitionendend(Button h){
+
+	        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
+	        st.setToX(0.9);
+	        st.setToY(0.9);
+	        st.setByX(1);
+	        st.setByY(1);
+	        st.setCycleCount(Animation.INDEFINITE);
+	        st.play();
+	    }
+
+	    static void addscaletransition1end(ImageView h){
+
+	        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
+	        st.setToX(0.9);
+	        st.setToY(0.9);
+	        st.setByX(1);
+	        st.setByY(1);
+	        st.setCycleCount(Animation.INDEFINITE);
+	        st.play();
+	    }
+
+	    public void addendpageend(List<Image> images) throws FileNotFoundException {
+
+	        Image image1 = new Image("AP\\homepage1.png");
+	        Image image2 = new Image("AP\\homepage2.png");
+	        Image image3 = new Image("AP\\homepage3.png");
+	        Image image4 = new Image("AP\\homepage4.png");
+	        Image image5 = new Image("AP\\homepage5.png");
+	        Image image6 = new Image("AP\\homepage6.png");
+	        Image image7 = new Image("AP\\homepage7.png");
+	        Image image8 = new Image("AP\\homepage8.png");
+
+
+	        images.add(image1);images.add(image2);images.add(image3);images.add(image4);
+	        images.add(image5);images.add(image6);images.add(image7);images.add(image8);
+
+	    }
+	    public static void animatehomepageend(List<Image> images,ImageView imageView) {
+	        Transition animation = new Transition() {
+	            {
+	                setCycleDuration(Duration.millis(2000)); // total time for animation
+	                setCycleCount(Animation.INDEFINITE);
+	            }
+
+	            @Override
+	            protected void interpolate(double fraction) {
+	                int index = (int) (fraction*(images.size()-1));
+	                imageView.setImage(images.get(index));
+	                imageView.setX(620);
+	                imageView.setY(20);
+	                imageView.setFitHeight(300);
+	                imageView.setFitWidth(350);
+	                imageView.setPreserveRatio(true);
+	            }
+	        };
+	        animation.play();
+
+
+	    }
+	    static void scoredisplaysend() throws FileNotFoundException {
+	        score = new Image("AP\\score.png");
+	        s = new ImageView(score);
+	        s.setX(610);
+	        s.setY(220);
+	        s.setFitHeight(50);
+	        s.setFitWidth(300);
+	        s.setPreserveRatio(true);
+
+	        t1.setText(gamescore+"");
+	        t1.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+	        t1.setFill(Color.WHITESMOKE);
+	        t1.setX(750);
+	        t1.setY(280);
+
+	        bestscore = new Image("AP\\bestscore.png");
+	        bs = new ImageView(bestscore);
+	        bs.setX(610);
+	        bs.setY(320);
+	        bs.setFitHeight(50);
+	        bs.setFitWidth(300);
+	        bs.setPreserveRatio(true);
+
+	        t2.setText(highscore+"");
+	        t2.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+	        t2.setFill(Color.WHITESMOKE);
+	        t2.setX(750);
+	        t2.setY(380);
+	    }
+
+	    
 			
 		public static void main(String[] args1)
 		{
@@ -46,13 +246,109 @@ public class Main extends Application
 			launch(args);
 		}
 		
-		public static  void NewGame(Stage stage) throws FileNotFoundException
+		public static  void NewGame(Stage stage) throws Exception
 		{
 			System.out.println("new game");
 			new_game_obj=new Game(stage);
 			
+			System.out.println("OVER");
+			
+		
+			
 		}
 		
+		public static  void endgamepage(Stage st) throws Exception
+		{
+			Game.gameover=false;
+			scoredisplaysend();
+			new_game_obj=new Game(st);
+			
+		
+			
+			
+			 List<Image> images=new ArrayList<Image>();
+		        addhomepage(images);
+		        ImageView imageView=new ImageView();
+		        animatehomepageend(images,imageView);
+
+		        Button b=addrestartbuttonend();
+		        b.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        	try {
+		        		
+						NewGame(st);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        	}
+		        	});
+		        addscaletransitionendend(b);
+
+		        Button b2=addhomebuttonend();
+		        b2.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        		System.out.println("MAIN");
+		        		st.setScene(homescene);
+		        	}
+		        	});
+		        addscaletransitionendend(b2);
+
+		        ImageView b3=addstarcountend();
+		        addscaletransition1end(b3);
+
+		        Button b4=addstarbuttonend();
+		        addscaletransitionendend(b4);
+
+		        
+
+		        Text t4 = new Text();
+
+
+		        Image i = new Image("AP\\circle1.png");
+		        ImageView iw = new ImageView(i);
+		        Image i2 = new Image("AP\\circle2.png");
+		        ImageView iw2 = new ImageView(i2);
+		        Image i3 = new Image("AP\\circle1.png");
+		        ImageView iw3 = new ImageView(i3);
+		        addrotatingcirclesend(iw, iw2, iw3);
+
+		        t3.setText("-3");
+		        t3.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15));
+		        t3.setFill(Color.BLACK);
+		        t3.setX(750);
+		        t3.setY(655);
+
+		        t4.setText("20");
+		        t4.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+		        t4.setFill(Color.WHITESMOKE);
+		        t4.setX(1042);
+		        t4.setY(93);
+
+		        Group root = new Group();
+                root.getChildren().add(imageView);
+                root.getChildren().add(bs);
+                root.getChildren().add(s);
+                root.getChildren().add(t1);
+                root.getChildren().add(t2);
+                root.getChildren().add(b);
+                root.getChildren().add(b2);
+                root.getChildren().add(b3);
+                root.getChildren().add(b4);
+                root.getChildren().add(t3);
+                root.getChildren().add(t4);
+                root.getChildren().add(iw);
+                root.getChildren().add(iw2);
+                root.getChildren().add(iw3);
+                
+		        Scene scene = new Scene(root, 1500, 780, Color.BLACK);
+
+		        
+		        st.setScene(scene);
+		        st.show();
+		}
 		
 		public static  void help()//
 		{
@@ -74,7 +370,7 @@ public class Main extends Application
 		}
 		
 		
-		 public void addhomepage(List<Image> images) throws FileNotFoundException {
+		 public static void addhomepage(List<Image> images) throws FileNotFoundException {
 
 		        Image image1 = new Image("AP\\homepage1.png");
 		        Image image2 = new Image("AP\\homepage2.png");
@@ -238,6 +534,9 @@ public class Main extends Application
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 		        	}
 		        	});
@@ -282,10 +581,13 @@ public class Main extends Application
 
 		        Group root = new Group(imageView,b,b2,b3,b4, iw, iw2, iw3);
 		        Scene scene = new Scene(root, 1500, 800, Color.BLACK);
+		        homescene=scene;
 		        stage.setTitle("Color Switch");
 		        stage.setScene(scene);
 
 		        stage.show();
 		    }
+		    
+		    
 
 }
