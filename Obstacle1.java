@@ -44,6 +44,7 @@ public class Obstacle1 extends Obstacles{
 	Ball ball;
 	Obstacle1(int pos, Ball b) throws Exception
 	{
+		 
          sety_pos(pos);
          ball= (Ball)b;
          start();
@@ -66,7 +67,7 @@ public class Obstacle1 extends Obstacles{
 	            for (Rectangle o : c ) {
 	                if (((Path)Shape.intersect(ball.getMyball(), o)).getElements().size() > 0) {
 	                    if(!o.getFill().equals(ball.getMyball().getFill())){
-	                    	System.out.println("Hit!");
+	                    	Game.gameover=true;
 	                    }
 	                    if(o.getFill().equals(ball.getMyball().getFill())){
 	                    	System.out.println("Pass!");
