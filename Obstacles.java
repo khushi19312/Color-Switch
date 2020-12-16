@@ -33,6 +33,7 @@ public abstract class Obstacles extends Application {
 	private static long serialVersionUID;
 	private Group obstacle;
 	
+	
 	public abstract void move(Group g, List<Rectangle> images) ;
 	public abstract void create(List<Rectangle> images) throws FileNotFoundException;
 	public int getColour_ypos() {
@@ -98,6 +99,7 @@ public abstract class Obstacles extends Application {
 		System.out.println("Tpos of obstacle is "+y_pos);
 		
 	}
+	
 		
 	//}
 
