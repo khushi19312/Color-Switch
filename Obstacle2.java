@@ -18,7 +18,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -27,7 +26,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList; 
 import java.util.List;
 
-public class Obstacle2 extends Obstacles{
+public class Obstacle3 extends Obstacles{
+	
+	
+
+	
 	
 	/*private int x_pos;
 	private int y_pos;
@@ -41,34 +44,34 @@ public class Obstacle2 extends Obstacles{
 	/*Obstacle1(Stage stage) throws Exception{
 		start(stage);
 	}*/
-	List<Rectangle> sq=new ArrayList();;
 	Ball ball;
-	Obstacle2(int pos, Ball b) throws Exception
+	List<Rectangle> t =new ArrayList();
+	
+	Obstacle3(int pos, Ball b) throws Exception
 	{
-		ball = (Ball)b; 
-		sq= new ArrayList<Rectangle>();
-        setType("square");
-         sety_pos(pos);
-         start();
+		ball = (Ball)b;
+		t= new ArrayList<Rectangle>();
+		setType("diamond");
+		sety_pos(pos);
+		//setx_pos(650);
+		start();
+
 	}
 	
     public void start() throws Exception{
 
+        
 
-        //ImageView s = new ImageView();
-    	//List<Rectangle> sq = new ArrayList<>(); 
-        create(sq);        
-        Group group = new Group(sq.get(0), sq.get(1), sq.get(2), sq.get(3));       
-        move(group, sq);         
+    	create(t);
+        Group group = new Group(t.get(0), t.get(1), t.get(2),t.get(3));       
+        move(group, t);         
         setObstacle(group);
-        /*Group root = new Group(group);
-        primaryStage.setScene(new Scene(root, 600, 400));
-        primaryStage.show();*/
+        
         ball.getMyball().boundsInParentProperty().addListener((ChangeListener<? super Bounds>) new ChangeListener<Bounds>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Bounds> observable,
 	                Bounds oldValue, Bounds newValue) {
-	            for (Rectangle o : sq ) {
+	            for (Rectangle o : t ) {
 	                if (((Path)Shape.intersect(ball.getMyball(), o)).getElements().size() > 0) {
 	                    if(!o.getFill().equals(ball.getMyball().getFill())){
 	                    	System.out.println("Hit!");
@@ -81,69 +84,59 @@ public class Obstacle2 extends Obstacles{
 	        }
 	    });
 
+        
     }
 
-    public void create(List<Rectangle> sq) throws FileNotFoundException {
-    	/*Image square1 = new Image("AP\\square1.png");
-        Image square2 = new Image("AP\\square2.png");
-        Image square3 = new Image("AP\\square3.png");
-        Image square4 = new Image("AP\\square4.png");
-        Image square5 = new Image("AP\\square5.png");
-        Image square6 = new Image("AP\\square6.png");
-        Image square7 = new Image("AP\\square7.png");
-        Image square8 = new Image("AP\\square8.png");*/
-        
-    	
+    public void create(List<Rectangle> t) throws FileNotFoundException {
+
     	Rectangle rect1= new Rectangle();
-        rect1.setX(650); 
-		rect1.setY(gety_pos()-80); 
-		rect1.setWidth(200); 
-		rect1.setHeight(20); 
-		rect1.setArcWidth(30.0); 
-		rect1.setArcHeight(20.0);  
-		rect1.setFill(Color.web("#FF0181"));
-        
-		Rectangle rect2= new Rectangle();
-		rect2.setX(650); 
-		rect2.setY(gety_pos()-80); 
-		rect2.setWidth(20); 
-		rect2.setHeight(200); 
-		rect2.setArcWidth(30.0); 
-		rect2.setArcHeight(20.0);  
-		rect2.setFill(Color.web("#900DFF"));
-		
-        Rectangle rect3= new Rectangle();
-        rect3.setX(650); 
-		rect3.setY(gety_pos()+100); 
-		rect3.setWidth(200); 
-		rect3.setHeight(20); 
+    	 rect1.setX(680); 
+ 		rect1.setY(gety_pos()-45); 
+ 		rect1.setWidth(20); 
+ 		rect1.setHeight(180); 
+ 		rect1.setArcWidth(30.0); 
+ 		rect1.setArcHeight(20.0);  
+ 		rect1.setRotate(60);
+ 		rect1.setFill(Color.web("#FF0181"));//pink
+         
+ 		Rectangle rect2= new Rectangle();
+ 		rect2.setX(820); 
+ 		rect2.setY(gety_pos()-45); 
+ 		rect2.setWidth(20); 
+ 		rect2.setHeight(180); 
+ 		rect2.setArcWidth(30.0); 
+ 		rect2.setArcHeight(20.0);  
+ 		rect2.setRotate(-60);
+ 		rect2.setFill(Color.web("#900DFF"));
+ 		
+    	Rectangle rect3= new Rectangle();
+   	 rect3.setX(680); 
+		rect3.setY(gety_pos()+45); 
+		rect3.setWidth(20); 
+		rect3.setHeight(180); 
 		rect3.setArcWidth(30.0); 
 		rect3.setArcHeight(20.0);  
+		rect3.setRotate(-60);
 		rect3.setFill(Color.web("FAE100"));
         
-        Rectangle rect4= new Rectangle();
-        rect4.setX(830); 
-		rect4.setY(gety_pos()-80); 
+		Rectangle rect4= new Rectangle();
+		rect4.setX(830); 
+		rect4.setY(gety_pos()+45); 
 		rect4.setWidth(20); 
-		rect4.setHeight(200); 
-		rect4.setArcWidth(30.0); 
+		rect4.setHeight(180); 
+		rect4.setArcWidth(+30.0); 
 		rect4.setArcHeight(20.0);  
+		rect4.setRotate(60
+				);
 		rect4.setFill(Color.web("#32DBF0"));
+		
+		
+       
         
-		sq.add(rect1);
-        sq.add(rect2);
-        sq.add(rect3);
-        sq.add(rect4);
-
-        /*sq.add(square1);
-        sq.add(square2);
-        sq.add(square3);
-        sq.add(square4);
-        sq.add(square5);
-        sq.add(square6);
-        sq.add(square7);
-        sq.add(square8);
-        sq.add(square8);*/
+		t.add(rect1);
+        t.add(rect2);
+        t.add(rect3);
+        t.add(rect4);
 
     }
 
@@ -161,23 +154,50 @@ public class Obstacle2 extends Obstacles{
     	rotate.setNode(g);
     	rotate.play();
     }
-    public ArrayList<Rectangle> getShape() {
-    	return (ArrayList<Rectangle>) sq;
-    }
-
-	@Override
-	public int[] collision_pos(int ballpos) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public int getColours(int ballpos) {
+		if(ballpos>=gety_pos())
+			{
+				if(getOrientation()==1 || getOrientation()==2)
+				    return 1;
+				else if(getOrientation()==3 || getOrientation()==4)
+				    return 4;
+				else if(getOrientation()==5 || getOrientation()==6)
+				    return 2;
+				else 
+				    return 3;
+			}
+		else
+			{
+			
+			if(getOrientation()==1 || getOrientation()==2)
+			    return 2;
+			else if(getOrientation()==3 || getOrientation()==4)
+			    return 3;
+			else if(getOrientation()==5 || getOrientation()==6)
+			    return 1;
+			else 
+			    return 4;
+				
+			}
+	}
+	
+	public ArrayList<Rectangle> getShape() {
+    	return (ArrayList<Rectangle>) t;
+    }
+	
+	@Override
+	public int[] collision_pos(int ballpos) {
 		// TODO Auto-generated method stub
-		return 0;
+		int[] limits=new int[4];
+		limits[0]=gety_pos()+130+18;
+		limits[1]=gety_pos()+130;
+		limits[2]=gety_pos()-130;
+		limits[3]=gety_pos()-130-18;
+		return limits;
+		
 	}
 
-		
-	
-	
+
 }
