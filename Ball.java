@@ -49,6 +49,13 @@ public class Ball extends Application{
 	    y_jump+=y;
 	  }
 	  public void change_colour(int c){
+		  if(color==c)
+		  {
+			  if(color==1)
+				  c=4;
+			  else
+				  c--;
+		  }
 	    color = c;
 	   // if(colors==null)System.out.println("NULL");
 	    myball.setFill(colors.get(c));
