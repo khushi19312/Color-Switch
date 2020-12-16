@@ -2,7 +2,10 @@ package application;
 
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -12,7 +15,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -39,11 +44,12 @@ public class Obstacle3 extends Obstacles{
 	/*Obstacle1(Stage stage) throws Exception{
 		start(stage);
 	}*/
-	
+	Ball ball;
 	List<Rectangle> t =new ArrayList();
 	
-	Obstacle3(int pos) throws Exception
+	Obstacle3(int pos, Ball b) throws Exception
 	{
+		ball = (Ball)b;
 		t= new ArrayList<Rectangle>();
 		setType("diamond");
 		sety_pos(pos);
@@ -60,6 +66,23 @@ public class Obstacle3 extends Obstacles{
         Group group = new Group(t.get(0), t.get(1), t.get(2),t.get(3));       
         move(group, t);         
         setObstacle(group);
+        
+        ball.getMyball().boundsInParentProperty().addListener((ChangeListener<? super Bounds>) new ChangeListener<Bounds>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Bounds> observable,
+	                Bounds oldValue, Bounds newValue) {
+	            for (Rectangle o : t ) {
+	                if (((Path)Shape.intersect(ball.getMyball(), o)).getElements().size() > 0) {
+	                    if(!o.getFill().equals(ball.getMyball().getFill())){
+	                    	System.out.println("Hit!");
+	                    }
+	                    if(o.getFill().equals(ball.getMyball().getFill())){
+	                    	System.out.println("Pass!");
+	                    }
+	                }
+	            }
+	        }
+	    });
 
         
     }
@@ -159,7 +182,11 @@ public class Obstacle3 extends Obstacles{
 				
 			}
 	}
-
+	
+	public ArrayList<Rectangle> getShape() {
+    	return (ArrayList<Rectangle>) t;
+    }
+	
 	@Override
 	public int[] collision_pos(int ballpos) {
 		// TODO Auto-generated method stub
