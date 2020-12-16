@@ -49,6 +49,7 @@ public class Obstacle3 extends Obstacles{
 	
 	Obstacle3(int pos, Ball b) throws Exception
 	{
+		
 		ball = (Ball)b;
 		t= new ArrayList<Rectangle>();
 		setType("diamond");
@@ -74,7 +75,7 @@ public class Obstacle3 extends Obstacles{
 	            for (Rectangle o : t ) {
 	                if (((Path)Shape.intersect(ball.getMyball(), o)).getElements().size() > 0) {
 	                    if(!o.getFill().equals(ball.getMyball().getFill())){
-	                    	System.out.println("Hit!");
+	                    	Game.gameover=true;
 	                    }
 	                    if(o.getFill().equals(ball.getMyball().getFill())){
 	                    	System.out.println("Pass!");
