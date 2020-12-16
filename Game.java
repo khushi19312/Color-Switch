@@ -13,9 +13,12 @@ import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -26,7 +29,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -45,6 +48,7 @@ public class Game extends Application
 	private int currentScore;
 	private long serialVersionUID;
 	private static String[] args;
+	private Circle ball; 
 	boolean checking=false;
     int count=0;
     Group root;
@@ -69,10 +73,18 @@ public class Game extends Application
 		score.setLayoutY(40);
 		score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 		Obstacle_list = new ArrayList<Obstacles>();
-		
-		Obstacle_list.add(new Obstacle1(500));
+		 int ballcolor=getRandom();
+	        ball = new Circle(12,colors.get(ballcolor));
+	        ball_obj=new Ball(colors);
+			ball_obj.setMyball(ball);
+	        ball_obj.sety_pos(700);
+	        ball_obj.setx_pos(750);
+	        ball_obj.change_colour(ballcolor);
+	        ball.setTranslateZ(1);
+	        //ball.relocate(0,10);
+		Obstacle_list.add(new Obstacle1(500, this.ball_obj));
 		count++;
-		Obstacle_list.add(new Obstacle1(100));
+		Obstacle_list.add(new Obstacle1(100, this.ball_obj));
 		count++;
 		//System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
 		//addObstacles();
@@ -161,15 +173,15 @@ public class Game extends Application
 		int no=getRandom();
 		//System.out.println(no);
 		if(no==1){
-			Obstacle_list.add(new Obstacle1(prev_y));
+			Obstacle_list.add(new Obstacle1(prev_y, this.ball_obj));
 			//System.out.print("added 1");
 		}
 		else if(no==2){
-			Obstacle_list.add(new Obstacle2(prev_y));
+			Obstacle_list.add(new Obstacle2(prev_y, this.ball_obj));
 			//System.out.print("added 2");
 		}
 		else {
-			Obstacle_list.add(new Obstacle3(prev_y));
+			Obstacle_list.add(new Obstacle3(prev_y, this.ball_obj));
 			//System.out.print("added 3");
 		}
 		
@@ -279,15 +291,7 @@ public class Game extends Application
         b2 = setsavebutton(sv);
         addscaletransition(b2);
         
-        int ballcolor=getRandom();
-        Circle ball = new Circle(12,colors.get(ballcolor));
-        ball_obj=new Ball(colors);
-		ball_obj.setMyball(ball);
-        ball_obj.sety_pos(700);
-        ball_obj.setx_pos(750);
-        ball_obj.change_colour(ballcolor);
-        ball.setTranslateZ(1);
-        //ball.relocate(0,10);
+       
         
         
     	
@@ -330,7 +334,7 @@ public class Game extends Application
             			}
             		
         		}
-            	
+            
             
             
                //System.out.println(ball.getCenterY());
@@ -422,14 +426,18 @@ public class Game extends Application
 						root.getChildren().remove(Obstacle_list.get(0).getObstacle());
 	        			Obstacle_list.remove(0);
 					}	
-					
-					
+				  
+				
+				  
 					
 			   }
 			}));
 			checkExitCondition.setCycleCount(Timeline.INDEFINITE);
 			checkExitCondition.play();
-        
+			
+			
+			
+			
         
         
         stage.setTitle("Color Switch");
