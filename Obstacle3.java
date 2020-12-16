@@ -40,11 +40,12 @@ public class Obstacle3 extends Obstacles{
 		start(stage);
 	}*/
 	
-	List<Rectangle> t;
+	List<Rectangle> t =new ArrayList();
 	
 	Obstacle3(int pos) throws Exception
 	{
 		t= new ArrayList<Rectangle>();
+		setType("diamond");
 		sety_pos(pos);
 		//setx_pos(650);
 		start();
@@ -56,7 +57,7 @@ public class Obstacle3 extends Obstacles{
         
 
     	create(t);
-        Group group = new Group(t.get(0), t.get(1), t.get(2));       
+        Group group = new Group(t.get(0), t.get(1), t.get(2),t.get(3));       
         move(group, t);         
         setObstacle(group);
 
@@ -64,40 +65,55 @@ public class Obstacle3 extends Obstacles{
     }
 
     public void create(List<Rectangle> t) throws FileNotFoundException {
+
     	Rectangle rect1= new Rectangle();
-        rect1.setX(690); 
-		rect1.setY(gety_pos()-100); 
-		rect1.setWidth(20); 
-		rect1.setHeight(250); 
-		rect1.setArcWidth(30.0); 
-		rect1.setArcHeight(20.0);  
-		rect1.setRotate(32);
-		rect1.setFill(Color.web("#FF0181"));
-        
-		Rectangle rect2= new Rectangle();
-		rect2.setX(812); 
-		rect2.setY(gety_pos()-100); 
-		rect2.setWidth(20); 
-		rect2.setHeight(250); 
-		rect2.setArcWidth(30.0); 
-		rect2.setArcHeight(20.0);  
-		rect2.setRotate(-32);
-		rect2.setFill(Color.web("#900DFF"));
-		
-        Rectangle rect3= new Rectangle();
-        rect3.setX(628); 
-		rect3.setY(gety_pos()+116.205); 
-		rect3.setWidth(265); 
-		rect3.setHeight(20); 
+    	 rect1.setX(680); 
+ 		rect1.setY(gety_pos()-45); 
+ 		rect1.setWidth(20); 
+ 		rect1.setHeight(180); 
+ 		rect1.setArcWidth(30.0); 
+ 		rect1.setArcHeight(20.0);  
+ 		rect1.setRotate(60);
+ 		rect1.setFill(Color.web("#FF0181"));//pink
+         
+ 		Rectangle rect2= new Rectangle();
+ 		rect2.setX(820); 
+ 		rect2.setY(gety_pos()-45); 
+ 		rect2.setWidth(20); 
+ 		rect2.setHeight(180); 
+ 		rect2.setArcWidth(30.0); 
+ 		rect2.setArcHeight(20.0);  
+ 		rect2.setRotate(-60);
+ 		rect2.setFill(Color.web("#900DFF"));
+ 		
+    	Rectangle rect3= new Rectangle();
+   	 rect3.setX(680); 
+		rect3.setY(gety_pos()+45); 
+		rect3.setWidth(20); 
+		rect3.setHeight(180); 
 		rect3.setArcWidth(30.0); 
 		rect3.setArcHeight(20.0);  
+		rect3.setRotate(-60);
 		rect3.setFill(Color.web("FAE100"));
         
-        
+		Rectangle rect4= new Rectangle();
+		rect4.setX(830); 
+		rect4.setY(gety_pos()+45); 
+		rect4.setWidth(20); 
+		rect4.setHeight(180); 
+		rect4.setArcWidth(+30.0); 
+		rect4.setArcHeight(20.0);  
+		rect4.setRotate(60
+				);
+		rect4.setFill(Color.web("#32DBF0"));
+		
+		
+       
         
 		t.add(rect1);
         t.add(rect2);
         t.add(rect3);
+        t.add(rect4);
 
     }
 
