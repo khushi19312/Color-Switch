@@ -36,11 +36,12 @@ public class Obstacle2 extends Obstacles{
 	/*Obstacle1(Stage stage) throws Exception{
 		start(stage);
 	}*/
-	List<Rectangle> sq;
+	List<Rectangle> sq=new ArrayList();;
 	
 	Obstacle2(int pos) throws Exception
 	{
 		 sq= new ArrayList<Rectangle>();
+        setType("square");
          sety_pos(pos);
          start();
 	}
@@ -139,10 +140,6 @@ public class Obstacle2 extends Obstacles{
     	rotate.play();
     }
 
-	
-	public void get_ypos() {
-		
-	}
 
 	@Override
 	public int[] collision_pos(int ballpos) {
