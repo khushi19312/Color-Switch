@@ -2,7 +2,10 @@ package application;
 
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -12,7 +15,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -36,10 +41,11 @@ public class Obstacle1 extends Obstacles{
 		start(stage);
 	}*/
 	List<Rectangle> c=new ArrayList();
-	
-	Obstacle1(int pos) throws Exception
+	Ball ball;
+	Obstacle1(int pos, Ball b) throws Exception
 	{
          sety_pos(pos);
+         ball= (Ball)b;
          start();
 	}
 
@@ -52,7 +58,27 @@ public class Obstacle1 extends Obstacles{
         setType("cross");
         move(group, c);         
         setObstacle(group);
+        
+        ball.getMyball().boundsInParentProperty().addListener((ChangeListener<? super Bounds>) new ChangeListener<Bounds>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Bounds> observable,
+	                Bounds oldValue, Bounds newValue) {
+	            for (Rectangle o : c ) {
+	                if (((Path)Shape.intersect(ball.getMyball(), o)).getElements().size() > 0) {
+	                    if(!o.getFill().equals(ball.getMyball().getFill())){
+	                    	System.out.println("Hit!");
+	                    }
+	                    if(o.getFill().equals(ball.getMyball().getFill())){
+	                    	System.out.println("Pass!");
+	                    }
+	                }
+	            }
+	        }
+	    });
 
+    }
+    public ArrayList<Rectangle> getShape() {
+    	return (ArrayList<Rectangle>) c;
     }
 
     public void create(List<Rectangle> c) throws FileNotFoundException {
