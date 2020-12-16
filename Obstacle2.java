@@ -45,6 +45,7 @@ public class Obstacle2 extends Obstacles{
 	Ball ball;
 	Obstacle2(int pos, Ball b) throws Exception
 	{
+		
 		ball = (Ball)b; 
 		sq= new ArrayList<Rectangle>();
         setType("square");
@@ -71,7 +72,7 @@ public class Obstacle2 extends Obstacles{
 	            for (Rectangle o : sq ) {
 	                if (((Path)Shape.intersect(ball.getMyball(), o)).getElements().size() > 0) {
 	                    if(!o.getFill().equals(ball.getMyball().getFill())){
-	                    	System.out.println("Hit!");
+	                    	Game.gameover=true;
 	                    }
 	                    if(o.getFill().equals(ball.getMyball().getFill())){
 	                    	System.out.println("Pass!");
