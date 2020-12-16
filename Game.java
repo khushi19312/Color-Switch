@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
@@ -42,27 +43,160 @@ public class Game extends Application
 	private List<Obstacles> Obstacle_list;
 	private Star star_obj1;
 	private Star star_obj2;
-	private int value;
+	protected int value;
 	private ColorWheel colorwheel_obj1,colorwheel_obj2;
 	private HashMap<Integer,Color> colors;
 	private int currentScore;
 	private long serialVersionUID;
 	private static String[] args;
-	private Circle ball; 
-	boolean checking=false;
+	private Circle ball;
+	static Timeline checkExitCondition;
+	static boolean checking=false;
     int count=0;
     Group root;
+    static boolean gameover=false;
     Label score;
+    boolean pausegame=false;
+    Scene g;
+    ImageView cs = new ImageView();
+    List<Image> switches = new ArrayList<>();
+    
+    public Button addplaybuttonpause() throws FileNotFoundException {
+        Image i = new Image("AP\\playbutton.png");
+        ImageView iw = new ImageView(i);
+        /*iw.setX(590);
+        iw.setY(445);*/
+        iw.setFitHeight(100);
+        iw.setFitWidth(100);
+        Button b = new Button("", iw);
+        b.setLayoutX(610);
+        b.setLayoutY(465);
+        b.setPadding(new Insets(-20));
+        return b;
+    }
+
+    public Button addhomebuttonpause() throws FileNotFoundException {
+        Image i = new Image("AP\\homebutton.png");
+        ImageView iw = new ImageView(i);
+        /*iw.setX(860);
+        iw.setY(445);*/
+        iw.setFitHeight(100);
+        iw.setFitWidth(100);
+        Button b = new Button("", iw);
+        b.setLayoutX(880);
+        b.setLayoutY(465);
+        b.setPadding(new Insets(-20));
+        return b;
+    }
+
+    public void addrotatingcirclespause(ImageView iw, ImageView iw2, ImageView iw3, ImageView iw4) throws FileNotFoundException {
+        iw.setX(570);
+        iw.setY(425);
+        iw.setFitHeight(140);
+        iw.setFitWidth(140);
+        iw.setPreserveRatio(true);
+
+        RotateTransition rt = new RotateTransition(Duration.millis(1500), iw);
+        rt.setByAngle(360);
+        rt.setCycleCount(Animation.INDEFINITE);
+        rt.play();
+
+        iw2.setX(550);
+        iw2.setY(405);
+        iw2.setFitHeight(180);
+        iw2.setFitWidth(180);
+        iw2.setPreserveRatio(true);
+
+        RotateTransition r = new RotateTransition(Duration.millis(1500), iw2);
+        r.setByAngle(-360);
+        r.setCycleCount(Animation.INDEFINITE);
+        r.play();
+
+        iw3.setX(840);
+        iw3.setY(425);
+        iw3.setFitHeight(140);
+        iw3.setFitWidth(140);
+        iw3.setPreserveRatio(true);
+
+        RotateTransition ro = new RotateTransition(Duration.millis(1500), iw3);
+        ro.setByAngle(-360);
+        ro.setCycleCount(Animation.INDEFINITE);
+        ro.play();
+
+        iw4.setX(820);
+        iw4.setY(405);
+        iw4.setFitHeight(180);
+        iw4.setFitWidth(180);
+        iw4.setPreserveRatio(true);
+
+        RotateTransition rot = new RotateTransition(Duration.millis(1500), iw3);
+        rot.setByAngle(-360);
+        rot.setCycleCount(Animation.INDEFINITE);
+        rot.play();
+
+    }
+    void addscaletransitionpause(Button h){
+
+        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
+        st.setToX(0.9);
+        st.setToY(0.9);
+        st.setByX(1);
+        st.setByY(1);
+        st.setCycleCount(Animation.INDEFINITE);
+        st.play();
+    }
+    
+
+    public void addhomepagepause(List<Image> images) throws FileNotFoundException {
+
+        Image image1 = new Image("AP\\homepage1.png");
+        Image image2 = new Image("AP\\homepage2.png");
+        Image image3 = new Image("AP\\homepage3.png");
+        Image image4 = new Image("AP\\homepage4.png");
+        Image image5 = new Image("AP\\homepage5.png");
+        Image image6 = new Image("AP\\homepage6.png");
+        Image image7 = new Image("AP\\homepage7.png");
+        Image image8 = new Image("AP\\homepage8.png");
+
+
+        images.add(image1);images.add(image2);images.add(image3);images.add(image4);
+        images.add(image5);images.add(image6);images.add(image7);images.add(image8);
+
+    }
+    public void animatehomepagepause(List<Image> images,ImageView imageView) {
+        Transition animation = new Transition() {
+            {
+                setCycleDuration(Duration.millis(2000)); // total time for animation
+                setCycleCount(Animation.INDEFINITE);
+            }
+
+            @Override
+            protected void interpolate(double fraction) {
+                int index = (int) (fraction*(images.size()-1));
+                imageView.setImage(images.get(index));
+                imageView.setX(580);
+                imageView.setY(20);
+                imageView.setFitHeight(300);
+                imageView.setFitWidth(480);
+                imageView.setPreserveRatio(true);
+            }
+        };
+        animation.play();
+
+
+    }
+
+    
 	Game(Stage stage) throws Exception
 	{
 	
 		value=0;
 		colors=new HashMap<Integer, Color>();
-		Color purple=Color.rgb(117, 37, 212);
-		Color pink=Color.rgb(255, 0, 128);
-		Color blue=Color.rgb(53, 226, 242);
+		Color purple=Color.web("#FF0181");
+		Color pink=Color.web("#900DFF");
+		Color blue=Color.web("FAE100");
 		Color white=Color.rgb(255,255, 255);
-		Color yellow=Color.rgb(245, 223, 15);
+		Color yellow=Color.web("#32DBF0");
 		colors.put(1,purple);//purple
 		colors.put(2,pink);//pink
 		colors.put(3,blue);//blue
@@ -134,8 +268,62 @@ public class Game extends Application
 	{
 		
 	}
-	public void pause()
+	public void pause(Stage stage,int pos) throws FileNotFoundException
 	{
+		
+		List<Image> images=new ArrayList<Image>();
+        addhomepagepause(images);
+        ImageView imageView=new ImageView();
+        animatehomepagepause(images,imageView);
+
+        Button b=addplaybuttonpause();
+        b.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent event) {
+        	try {
+        		
+				stage.setScene(g);
+				ball_obj.sety_pos(pos);
+				Thread.sleep(100);
+				checkExitCondition.play();
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	}
+        	});
+        addscaletransition(b);
+
+        Button b2=addhomebuttonpause();
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent event) {
+        	try {
+        		stage.setScene(Main.homescene);
+        		
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	}
+        	});
+        addscaletransition(b2);
+
+        Image i = new Image("AP\\circle1.png");
+        ImageView iw = new ImageView(i);
+        Image i2 = new Image("AP\\circle2.png");
+        ImageView iw2 = new ImageView(i2);
+        Image i3 = new Image("AP\\circle1.png");
+        ImageView iw3 = new ImageView(i3);
+        Image i4 = new Image("AP\\circle2.png");
+        ImageView iw4 = new ImageView(i4);
+
+        addrotatingcirclespause(iw, iw2, iw3, iw4);
+
+        Group root = new Group(imageView, b, b2, iw, iw2, iw3, iw4);
+        stage.setScene(new Scene(root, 1500, 780, Color.BLACK));
+        stage.show();
 		
 	}
 	public void save()
@@ -161,7 +349,7 @@ public class Game extends Application
 	}
 	
 	public void addObstacles() throws Exception
-	{	System.out.print("\n Adding obstacles");
+	{	//System.out.print("\n Adding obstacles");
 	     int l=Obstacle_list.size();
 	     int prev_y=500;
 	     int sub=400;
@@ -169,7 +357,7 @@ public class Game extends Application
 	    	 sub=500;
 	     if(l>0)
 		prev_y = Obstacle_list.get(l-1).gety_pos()-sub;
-		System.out.print(" "+prev_y);
+		//System.out.print(" "+prev_y);
 		int no=getRandom();
 		//System.out.println(no);
 		if(no==1){
@@ -282,6 +470,19 @@ public class Game extends Application
         ImageView p = new ImageView(pause);
         Button b1 =  new Button();
         b1 = setpausebutton(p);
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent event) {
+        	try {
+        		checkExitCondition.stop();
+        		pause(stage,ball_obj.gety_pos());
+        		
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	}
+        	});
         addscaletransition(b1);
 
 
@@ -342,11 +543,44 @@ public class Game extends Application
         });
         //scene.setEventDispatcher(new EventDispatcher(Event e));
          
-			   Timeline checkExitCondition = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
+			   checkExitCondition = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
 			
+				  
 			   @Override
 			   public void handle(ActionEvent event) {
 				   
+				   System.out.println(gameover);
+				   if(gameover || ball_obj.gety_pos()>=1000)
+					try {
+						checkExitCondition.stop();
+						if(value>Main.highscore)
+							Main.highscore=value;
+						
+					Main.gamescore=value;
+						Main.endgamepage(stage);
+						
+						checkExitCondition.stop();
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				   
+				   if(pausegame)
+				   {
+					   checkExitCondition.stop();
+					   
+					   try {
+						pause(stage,ball_obj.gety_pos());
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					   pausegame=false;
+					   
+				   }
 				   if(colorwheel_obj1!=null)
 				   {
 					   if(ball_obj.gety_pos()-100<=colorwheel_obj1.gety_pos())
@@ -390,14 +624,14 @@ public class Game extends Application
 					   }
 				   }
 				   
-				  System.out.println("Obstacles in list******"+Obstacle_list.size()+"*************");
-				  for(int i=0;i<Obstacle_list.size();i++)
-					     System.out.println(Obstacle_list.get(i).gety_pos()+Obstacle_list.get(i).getType());
+				 // System.out.println("Obstacles in list******"+Obstacle_list.size()+"*************");
+				 // for(int i=0;i<Obstacle_list.size();i++)
+					//     System.out.println(Obstacle_list.get(i).gety_pos()+Obstacle_list.get(i).getType());
 				  
 				  if(Obstacle_list.get(0).gety_pos()>=850 && checking==false && count>2) {
-	        			System.out.println("***********HERE********************");
+	        			//System.out.println("***********HERE********************");
 	        			
-	        			System.out.print("\nRemoved 1");
+	        			//System.out.print("\nRemoved 1");
 	        			try {
 							addObstacles();
 						} catch (Exception e) {
@@ -405,15 +639,15 @@ public class Game extends Application
 							e.printStackTrace();
 						}
 						root.getChildren().add(Obstacle_list.get(Obstacle_list.size()-1).getObstacle());
-						System.out.print("\nAdded 0");
+						//System.out.print("\nAdded 0");
 						count++;
 						root.getChildren().remove(Obstacle_list.get(0).getObstacle());
 	        			Obstacle_list.remove(0);
 					}	
 				  else if(Obstacle_list.get(0).gety_pos()>=740 && checking==false && count<=2) {
-	        			System.out.println("***********HERE********************");
+	        			//System.out.println("***********HERE********************");
 	        			
-	        			System.out.print("\nRemoved 1");
+	        		//	System.out.print("\nRemoved 1");
 	        			try {
 							addObstacles();
 						} catch (Exception e) {
@@ -421,7 +655,7 @@ public class Game extends Application
 							e.printStackTrace();
 						}
 						root.getChildren().add(Obstacle_list.get(Obstacle_list.size()-1).getObstacle());
-						System.out.print("\nAdded 0");
+						//System.out.print("\nAdded 0");
 						count++;
 						root.getChildren().remove(Obstacle_list.get(0).getObstacle());
 	        			Obstacle_list.remove(0);
@@ -431,6 +665,8 @@ public class Game extends Application
 				  
 					
 			   }
+
+		
 			}));
 			checkExitCondition.setCycleCount(Timeline.INDEFINITE);
 			checkExitCondition.play();
@@ -439,7 +675,7 @@ public class Game extends Application
 			
 			
         
-        
+        g=scene;
         stage.setTitle("Color Switch");
         stage.setScene(scene);
         stage.show();   
