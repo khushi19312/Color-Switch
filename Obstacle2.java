@@ -2,7 +2,10 @@ package application;
 
 import javafx.animation.*;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -12,7 +15,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -37,10 +42,11 @@ public class Obstacle2 extends Obstacles{
 		start(stage);
 	}*/
 	List<Rectangle> sq=new ArrayList();;
-	
-	Obstacle2(int pos) throws Exception
+	Ball ball;
+	Obstacle2(int pos, Ball b) throws Exception
 	{
-		 sq= new ArrayList<Rectangle>();
+		ball = (Ball)b; 
+		sq= new ArrayList<Rectangle>();
         setType("square");
          sety_pos(pos);
          start();
@@ -58,6 +64,22 @@ public class Obstacle2 extends Obstacles{
         /*Group root = new Group(group);
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();*/
+        ball.getMyball().boundsInParentProperty().addListener((ChangeListener<? super Bounds>) new ChangeListener<Bounds>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Bounds> observable,
+	                Bounds oldValue, Bounds newValue) {
+	            for (Rectangle o : sq ) {
+	                if (((Path)Shape.intersect(ball.getMyball(), o)).getElements().size() > 0) {
+	                    if(!o.getFill().equals(ball.getMyball().getFill())){
+	                    	System.out.println("Hit!");
+	                    }
+	                    if(o.getFill().equals(ball.getMyball().getFill())){
+	                    	System.out.println("Pass!");
+	                    }
+	                }
+	            }
+	        }
+	    });
 
     }
 
@@ -139,7 +161,9 @@ public class Obstacle2 extends Obstacles{
     	rotate.setNode(g);
     	rotate.play();
     }
-
+    public ArrayList<Rectangle> getShape() {
+    	return (ArrayList<Rectangle>) sq;
+    }
 
 	@Override
 	public int[] collision_pos(int ballpos) {
