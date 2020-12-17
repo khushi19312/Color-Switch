@@ -24,6 +24,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -308,6 +310,30 @@ public class Main extends Application
 		        addscaletransition1end(b3);
 
 		        Button b4=addstarbuttonend();
+		        b4.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        		try {
+		        		if(new_game_obj.value<2)
+		        		{
+		        			throw new NotSufficientStars();
+		        		}
+		        		}catch(Exception NotSufficientStars)
+		        		{
+		        			return;
+		        		}
+		        		Game g=Revival();
+		       
+		        		try {
+							new_game_obj = new Game(g, st);
+							new_game_obj = new Game(g, st);
+							
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	}
+		        	});
 		        addscaletransitionendend(b4);
 
 		        
@@ -323,7 +349,7 @@ public class Main extends Application
 		        ImageView iw3 = new ImageView(i3);
 		        addrotatingcirclesend(iw, iw2, iw3);
 
-		        t3.setText("-3");
+		        t3.setText("-2");
 		        t3.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15));
 		        t3.setFill(Color.BLACK);
 		        t3.setX(750);
@@ -386,12 +412,56 @@ public class Main extends Application
 		}
 		
 		
+		public static Game Revival()
+		{
+			FileInputStream f;
+			try {
+				f = new FileInputStream("revival.ser");
+				ObjectInputStream i=new ObjectInputStream(f);
+				Game g = (Game) i.readObject();
+				g.value-=2;
+				return g;
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+	        
+		}
+		
+		
+		public static void save_revival(Serializable game) {
+			savedgames.add((Game) game);
+			FileOutputStream f;
+			try {
+				f = new FileOutputStream("revival.ser");
+				ObjectOutputStream o=new ObjectOutputStream(f);
+				o.writeObject(game);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+		}
+		
 		public static void save(Serializable game) {
 			savedgames.add((Game) game);
 			FileOutputStream f;
 			try {
 				f = new FileOutputStream("colorswitch.ser");
 				ObjectOutputStream o=new ObjectOutputStream(f);
+				o.writeObject(game);
 				o.writeObject(savedgames);
 				
 			} catch (FileNotFoundException e) {
@@ -411,7 +481,7 @@ public class Main extends Application
 		
 		public static void exit()
 		{
-			
+			System.exit(0);
 		}
 		
 		
@@ -559,11 +629,15 @@ public class Main extends Application
 		        st.setCycleCount(Animation.INDEFINITE);
 		        st.play();
 		    }
-		   
+		    
 		    
 		    @Override
 		    public void start(Stage stage) throws FileNotFoundException {
-
+		    	
+		    	/*Media media = new Media("AP\\sound.mp3"); //replace /Movies/test.mp3 with your file
+		        MediaPlayer player = new MediaPlayer(media); 
+		        player.play();*/
+		        
 		        List<Image> images=new ArrayList<Image>();
 		        addhomepage(images);
 		        ImageView imageView=new ImageView();
@@ -602,15 +676,10 @@ public class Main extends Application
 		        b3.setOnAction(new EventHandler<ActionEvent>() {
 		        	@Override
 		        	public void handle(ActionEvent event) {
+		        
+		        		
 		        		Resume r= new Resume(stage);
-		        		try {
-		        			
-		        			
-							
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+		        		
 		        		
 		        	}
 		        	});
