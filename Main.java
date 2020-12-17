@@ -268,7 +268,7 @@ public class Main extends Application
 		{
 			Game.gameover=false;
 			scoredisplaysend();
-			new_game_obj=new Game(st);
+			//new_game_obj=new Game(st);
 			
 		
 			
