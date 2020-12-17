@@ -60,7 +60,7 @@ public class Main extends Application
 	    static Text t3 = new Text();
 	    static Text t4 = new Text();
 	    static ArrayList<Game> savedgames=new ArrayList<Game>();
-	    public static int count;
+	    public static int countsaved;
 	    
 	    public static ImageView addstarcountend() throws FileNotFoundException {
 
@@ -260,7 +260,7 @@ public class Main extends Application
 		{
 			System.out.println("new game");
 			new_game_obj=new Game(stage);
-			
+			//new_game_obj.gameover = false;
 			System.out.println("OVER");
 			
 		
@@ -272,10 +272,7 @@ public class Main extends Application
 			Game.gameover=false;
 			scoredisplaysend();
 			//new_game_obj=new Game(st);
-			
-		
-			
-			
+
 			 List<Image> images=new ArrayList<Image>();
 		        addhomepage(images);
 		        ImageView imageView=new ImageView();
@@ -286,7 +283,7 @@ public class Main extends Application
 		        	@Override
 		        	public void handle(ActionEvent event) {
 		        	try {
-		        		
+		        		Game.gameover=false;
 						NewGame(st);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -322,6 +319,7 @@ public class Main extends Application
 		        		{
 		        			return;
 		        		}
+		        		Game.gameover=false;
 		        		Game g=Revival();
 		       
 		        		try {
@@ -458,19 +456,52 @@ public class Main extends Application
 		public static void save(Serializable game) {
 			savedgames.add((Game) game);
 			FileOutputStream f;
-			try {
-				f = new FileOutputStream("colorswitch.ser");
+			switch(countsaved) {
+			case 0: try {
+					f = new FileOutputStream("colorswitch1.ser");
+					ObjectOutputStream o=new ObjectOutputStream(f);
+					o.writeObject(game);
+					//o.writeObject(savedgames);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				countsaved++;
+				break; 
+			case 1:try {
+				f = new FileOutputStream("colorswitch2.ser");
 				ObjectOutputStream o=new ObjectOutputStream(f);
 				o.writeObject(game);
-				o.writeObject(savedgames);
-				
-			} catch (FileNotFoundException e) {
+				//o.writeObject(savedgames);
+			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			countsaved++;	
+			break; 
+			case 2:try {
+				f = new FileOutputStream("colorswitch3.ser");
+				ObjectOutputStream o=new ObjectOutputStream(f);
+				o.writeObject(game);
+				//o.writeObject(savedgames);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			countsaved++;	
+			break; 
+			}
+			countsaved = countsaved%3;
+			
 	        
 		}
 		
@@ -649,7 +680,9 @@ public class Main extends Application
 		        	@Override
 		        	public void handle(ActionEvent event) {
 		        	try {
+		        		
 						NewGame(stage);
+						Game.gameover=false;
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -679,7 +712,7 @@ public class Main extends Application
 		        
 		        		
 		        		Resume r= new Resume(stage);
-		        		
+		        		Game.gameover=false;
 		        		
 		        	}
 		        	});
