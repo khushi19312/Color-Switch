@@ -1,6 +1,12 @@
 package application;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +46,7 @@ public class Main extends Application
 		private HashMap<Integer,Game> prev_games;
 		private int highScore;
 		private static String[] args;
-		 static int highscore=0;
+		static int highscore=0;
 	    static Image score;
 	    static ImageView s;
 	    static Text t1 = new Text();
@@ -51,6 +57,7 @@ public class Main extends Application
 	    static Text t2 = new Text();
 	    static Text t3 = new Text();
 	    static Text t4 = new Text();
+	    static ArrayList<Game> savedgames=new ArrayList<Game>();
 	    
 	    public static ImageView addstarcountend() throws FileNotFoundException {
 
@@ -354,9 +361,46 @@ public class Main extends Application
 		{
 			
 		}
-		public static void ResumeGame()
+		public static Game ResumeGame()
 		{
-			
+			FileInputStream f;
+			try {
+				f = new FileInputStream("colorswitch.ser");
+				ObjectInputStream i=new ObjectInputStream(f);
+				Game g = (Game) i.readObject();
+				return g;
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+	        
+		}
+		
+		
+		public static void save(Serializable game) {
+			savedgames.add((Game) game);
+			FileOutputStream f;
+			try {
+				f = new FileOutputStream("colorswitch.ser");
+				ObjectOutputStream o=new ObjectOutputStream(f);
+				o.writeObject(game);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
 		}
 		
 		public static void computeHighScore()
@@ -557,7 +601,16 @@ public class Main extends Application
 		        b3.setOnAction(new EventHandler<ActionEvent>() {
 		        	@Override
 		        	public void handle(ActionEvent event) {
-		            ResumeGame();
+		        		Game g=ResumeGame();
+		        		
+		        		try {
+							g.initialize(g, stage);
+							
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        		
 		        	}
 		        	});
 
