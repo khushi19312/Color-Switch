@@ -307,6 +307,30 @@ public class Main extends Application
 		        addscaletransition1end(b3);
 
 		        Button b4=addstarbuttonend();
+		        b4.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        		try {
+		        		if(new_game_obj.value<2)
+		        		{
+		        			throw new NotSufficientStars();
+		        		}
+		        		}catch(Exception NotSufficientStars)
+		        		{
+		        			return;
+		        		}
+		        		Game g=Revival();
+		       
+		        		try {
+							new_game_obj = new Game(g, st);
+							new_game_obj = new Game(g, st);
+							
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	}
+		        	});
 		        addscaletransitionendend(b4);
 
 		        
@@ -322,7 +346,7 @@ public class Main extends Application
 		        ImageView iw3 = new ImageView(i3);
 		        addrotatingcirclesend(iw, iw2, iw3);
 
-		        t3.setText("-3");
+		        t3.setText("-2");
 		        t3.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15));
 		        t3.setFill(Color.BLACK);
 		        t3.setX(750);
@@ -385,6 +409,49 @@ public class Main extends Application
 		}
 		
 		
+		public static Game Revival()
+		{
+			FileInputStream f;
+			try {
+				f = new FileInputStream("revival.ser");
+				ObjectInputStream i=new ObjectInputStream(f);
+				Game g = (Game) i.readObject();
+				g.value-=2;
+				return g;
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+	        
+		}
+		
+		
+		public static void save_revival(Serializable game) {
+			savedgames.add((Game) game);
+			FileOutputStream f;
+			try {
+				f = new FileOutputStream("revival.ser");
+				ObjectOutputStream o=new ObjectOutputStream(f);
+				o.writeObject(game);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+		}
+		
 		public static void save(Serializable game) {
 			savedgames.add((Game) game);
 			FileOutputStream f;
@@ -410,7 +477,7 @@ public class Main extends Application
 		
 		public static void exit()
 		{
-			
+			System.exit(0);
 		}
 		
 		
@@ -601,10 +668,11 @@ public class Main extends Application
 		        b3.setOnAction(new EventHandler<ActionEvent>() {
 		        	@Override
 		        	public void handle(ActionEvent event) {
-		        		Game g=ResumeGame();
+		        
+		        		Game gam=ResumeGame();
 		        		Game resume_game;
 		        		try {
-							resume_game = new Game(g, stage);
+							resume_game = new Game(gam, stage);
 							
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
