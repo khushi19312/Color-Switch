@@ -19,11 +19,12 @@ import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList; 
 import java.util.List;
 import javafx.application.Application;
 
-public abstract class Obstacles extends Application {
+public abstract class Obstacles extends Application implements Serializable{
 	private int x_pos=0;
 	private int y_pos;
 	private String type;
@@ -31,7 +32,7 @@ public abstract class Obstacles extends Application {
 	protected List <Integer> colors;
 	private int speed;
 	private static long serialVersionUID;
-	private Group obstacle;
+	private transient Group obstacle;
 	
 	
 	public abstract void move(Group g, List<Rectangle> images) ;
