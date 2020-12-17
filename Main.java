@@ -602,9 +602,9 @@ public class Main extends Application
 		        	@Override
 		        	public void handle(ActionEvent event) {
 		        		Game g=ResumeGame();
-		        		
+		        		Game resume_game;
 		        		try {
-							g.initialize(g, stage);
+							resume_game = new Game(g, stage);
 							
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
