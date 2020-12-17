@@ -1,806 +1,718 @@
 package application;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.application.Application;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Game extends Application implements Serializable
+
+
+public class Main extends Application 
 {
-	private Ball ball_obj;
-	private List<Obstacles> Obstacle_list;
-	private Star star_obj1;
-	private Star star_obj2;
-	protected int value;
-	private ColorWheel colorwheel_obj1,colorwheel_obj2;
-	private transient HashMap<Integer,Color> colors;
-	private int currentScore;
-	private long serialVersionUID;
-	private static String[] args;
-	private transient Circle ball;
-	static transient Timeline checkExitCondition;
-	static boolean checking=false;
-    int count=0;
-    transient Group root;
-    static boolean gameover=false;
-    transient Label score;
-    boolean pausegame=false;
-    transient Scene g;
-    transient ImageView cs = new ImageView();
-    transient List<Image> switches = new ArrayList<>();
-    
-    public List<Obstacles> getObstacleslist(){
-    	return Obstacle_list;
-    }
-    public Ball myballobj() {
-    	return ball_obj;
-    }
-    public Button addplaybuttonpause() throws FileNotFoundException {
-        Image i = new Image("AP\\playbutton.png");
-        ImageView iw = new ImageView(i);
-        /*iw.setX(590);
-        iw.setY(445);*/
-        iw.setFitHeight(100);
-        iw.setFitWidth(100);
-        Button b = new Button("", iw);
-        b.setLayoutX(610);
-        b.setLayoutY(465);
-        b.setPadding(new Insets(-20));
-        return b;
-    }
-
-    public Button addhomebuttonpause() throws FileNotFoundException {
-        Image i = new Image("AP\\homebutton.png");
-        ImageView iw = new ImageView(i);
-        /*iw.setX(860);
-        iw.setY(445);*/
-        iw.setFitHeight(100);
-        iw.setFitWidth(100);
-        Button b = new Button("", iw);
-        b.setLayoutX(880);
-        b.setLayoutY(465);
-        b.setPadding(new Insets(-20));
-        return b;
-    }
-
-    public void addrotatingcirclespause(ImageView iw, ImageView iw2, ImageView iw3, ImageView iw4) throws FileNotFoundException {
-        iw.setX(570);
-        iw.setY(425);
-        iw.setFitHeight(140);
-        iw.setFitWidth(140);
-        iw.setPreserveRatio(true);
-
-        RotateTransition rt = new RotateTransition(Duration.millis(1500), iw);
-        rt.setByAngle(360);
-        rt.setCycleCount(Animation.INDEFINITE);
-        rt.play();
-
-        iw2.setX(550);
-        iw2.setY(405);
-        iw2.setFitHeight(180);
-        iw2.setFitWidth(180);
-        iw2.setPreserveRatio(true);
-
-        RotateTransition r = new RotateTransition(Duration.millis(1500), iw2);
-        r.setByAngle(-360);
-        r.setCycleCount(Animation.INDEFINITE);
-        r.play();
-
-        iw3.setX(840);
-        iw3.setY(425);
-        iw3.setFitHeight(140);
-        iw3.setFitWidth(140);
-        iw3.setPreserveRatio(true);
-
-        RotateTransition ro = new RotateTransition(Duration.millis(1500), iw3);
-        ro.setByAngle(-360);
-        ro.setCycleCount(Animation.INDEFINITE);
-        ro.play();
-
-        iw4.setX(820);
-        iw4.setY(405);
-        iw4.setFitHeight(180);
-        iw4.setFitWidth(180);
-        iw4.setPreserveRatio(true);
-
-        RotateTransition rot = new RotateTransition(Duration.millis(1500), iw3);
-        rot.setByAngle(-360);
-        rot.setCycleCount(Animation.INDEFINITE);
-        rot.play();
-
-    }
-    void addscaletransitionpause(Button h){
-
-        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
-        st.setToX(0.9);
-        st.setToY(0.9);
-        st.setByX(1);
-        st.setByY(1);
-        st.setCycleCount(Animation.INDEFINITE);
-        st.play();
-    }
-    
-    public void addhomepagepause(List<Image> images) throws FileNotFoundException {
-
-        Image image1 = new Image("AP\\homepage1.png");
-        Image image2 = new Image("AP\\homepage2.png");
-        Image image3 = new Image("AP\\homepage3.png");
-        Image image4 = new Image("AP\\homepage4.png");
-        Image image5 = new Image("AP\\homepage5.png");
-        Image image6 = new Image("AP\\homepage6.png");
-        Image image7 = new Image("AP\\homepage7.png");
-        Image image8 = new Image("AP\\homepage8.png");
-
-
-        images.add(image1);images.add(image2);images.add(image3);images.add(image4);
-        images.add(image5);images.add(image6);images.add(image7);images.add(image8);
-
-    }
-    public void animatehomepagepause(List<Image> images,ImageView imageView) {
-        Transition animation = new Transition() {
-            {
-                setCycleDuration(Duration.millis(2000)); // total time for animation
-                setCycleCount(Animation.INDEFINITE);
-            }
-
-            @Override
-            protected void interpolate(double fraction) {
-                int index = (int) (fraction*(images.size()-1));
-                imageView.setImage(images.get(index));
-                imageView.setX(580);
-                imageView.setY(20);
-                imageView.setFitHeight(300);
-                imageView.setFitWidth(480);
-                imageView.setPreserveRatio(true);
-            }
-        };
-        animation.play();
-
-
-    }
-
-	Game(Stage stage) throws Exception
-	{
 	
-		value=0;
-		colors=new HashMap<Integer, Color>();
-		Color purple=Color.web("#FF0181");
-		Color pink=Color.web("#900DFF");
-		Color blue=Color.web("FAE100");
-		Color white=Color.rgb(255,255, 255);
-		Color yellow=Color.web("#32DBF0");
-		colors.put(1,purple);//purple
-		colors.put(2,pink);//pink
-		colors.put(3,blue);//blue
-		colors.put(4,yellow);//yellow
-		score = new Label("Score: ");
-		score.setTextFill(white);
-		score.setLayoutX(850);
-		score.setLayoutY(40);
-		score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-		Obstacle_list = new ArrayList<Obstacles>();
-		 int ballcolor=getRandom();
-	        ball = new Circle(12,colors.get(ballcolor));
-	        ball_obj=new Ball(colors);
-			ball_obj.setMyball(ball);
-	        ball_obj.sety_pos(700);
-	        ball_obj.setx_pos(750);
-	        ball_obj.change_colour(ballcolor);
-	        ball.setTranslateZ(1);
-	        //ball.relocate(0,10);
-		Obstacle_list.add(new Obstacle1(500, this.ball_obj));
-		count++;
-		Obstacle_list.add(new Obstacle1(100, this.ball_obj));
-		count++;
-		//System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
-		//addObstacles();
-		start(stage);
-    }
-	public int getvalue() {
-		return value;
-	}
-	public Game(Game g, Stage stage) throws Exception
-	{
-		value=0;
-		this.value= g.getvalue();
-		
-		colors=new HashMap<Integer, Color>();
-		Color purple=Color.web("#FF0181");
-		Color pink=Color.web("#900DFF");
-		Color blue=Color.web("FAE100");
-		Color white=Color.rgb(255,255, 255);
-		Color yellow=Color.web("#32DBF0");
-		colors.put(1,purple);//purple
-		colors.put(2,pink);//pink
-		colors.put(3,blue);//blue
-		colors.put(4,yellow);//yellow
-		score = new Label("Score: ");
-		score.setTextFill(white);
-		score.setLayoutX(850);
-		score.setLayoutY(40);
-		score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-		updateCurrentScore();
-		Obstacle_list = new ArrayList<Obstacles>();
-		
-		//Obstacle_list = g.getObstacleslist();
-		 int ballcolor=g.myballobj().get_colour();
-	        ball = new Circle(12,colors.get(ballcolor));
-	        ball_obj=new Ball(colors);
-			ball_obj.setMyball(ball);
-	        ball_obj.sety_pos(g.myballobj().gety_pos());
-	        ball_obj.setx_pos(750);
-	        ball_obj.change_colour(ballcolor);
-	        ball.setTranslateZ(1);
-	        //ball.relocate(0,10);
-	        
-	    for(int i=0;i<g.getObstacleslist().size();++i) {
-			if(g.getObstacleslist().get(i).getClass().getName().equals("Obstacle1")) {
-				Obstacle1 o=new Obstacle1(g.getObstacleslist().get(i).gety_pos(), this.ball_obj);
-				Obstacle_list.add(o);
-			}
-			if(g.getObstacleslist().get(i).getClass().getName().equals("Obstacle2")) {
-				Obstacle2 o=new Obstacle2(g.getObstacleslist().get(i).gety_pos(), this.ball_obj);
-				Obstacle_list.add(o);
-			}
-			if(g.getObstacleslist().get(i).getClass().getName().equals("Obstacle3")) {
-				Obstacle3 o=new Obstacle3(g.getObstacleslist().get(i).gety_pos(), this.ball_obj);
-				Obstacle_list.add(o);
-			}
-		}
-		count = Obstacle_list.size();
-		if(count==1) {
-			addObstacles();
-			count++;
-		}
-		else if(count==0) {
-			Obstacle_list.add(new Obstacle1(500, this.ball_obj));
-			count++;
-			Obstacle_list.add(new Obstacle1(100, this.ball_obj));
-			count++;
-		}
-		
-		//System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
-		//addObstacles();
-		cs = new ImageView();
-	    switches = new ArrayList<>(); 
-	    start(stage);
-	
-    }
+		private boolean new_game;
+		private static Game new_game_obj;
+		private boolean resume_game;
+		private Resume resume_game_obj;
+		private Save save_obj;
+		private boolean exit;
+		private HashMap<Integer,Game> prev_games;
+		private int highScore;
+		private static String[] args;
+		static int highscore=0;
+	    static Image score;
+	    static ImageView s;
+	    static Text t1 = new Text();
+        static Scene homescene;
+	    static Image bestscore;
+	    static int gamescore=0;
+	    static ImageView bs;
+	    static Text t2 = new Text();
+	    static Text t3 = new Text();
+	    static Text t4 = new Text();
+	    static ArrayList<Game> savedgames=new ArrayList<Game>();
+	    public static int count;
+	    
+	    public static ImageView addstarcountend() throws FileNotFoundException {
 
-	 int getRandom()
-	    {
-	    	double f = Math.random()/Math.nextDown(1.0);
-	        double x = 1*(1.0 - f) + 4*f;
-	        return (int)x;
+	        Image i2 = new Image("AP\\stars.png");
+	        ImageView iw2 = new ImageView(i2);
+	        iw2.setX(1010);
+	        iw2.setY(20);
+	        iw2.setFitHeight(60);
+	        iw2.setFitWidth(90);
+
+	        return iw2;
 
 	    }
-	 
-	 boolean getRandomboolean()
-	    {
-	    	double f = Math.random();
-	    	if(f>0.5)return true;
-	    	else
-	    		return false;
-	      
+	    public static Button addrestartbuttonend() throws FileNotFoundException {
+	        Image i = new Image("AP\\loadbutton.png");
+	        ImageView iw = new ImageView(i);
+	        //iw.setX(710);
+	        //iw.setY(445);
+	        iw.setFitHeight(100);
+	        iw.setFitWidth(100);
+	        Button b = new Button("", iw);
+	        b.setLayoutX(735);
+	        b.setLayoutY(470);
+	        b.setPadding(new Insets(-25));
+	        return b;
+	    }
+	    public static Button addstarbuttonend() throws FileNotFoundException {
+	        Image i = new Image("AP\\star.png");
+	        ImageView iw = new ImageView(i);
+	        //iw.setX(725);
+	        //iw.setY(610);
+	        iw.setFitHeight(70);
+	        iw.setFitWidth(70);
+	        Button b = new Button("", iw);
+	        b.setLayoutX(750);
+	        b.setLayoutY(635);
+	        b.setPadding(new Insets(-25));
+
+	        return b;
+	    }
+	    public static Button addhomebuttonend() throws FileNotFoundException {
+
+	        Image i4 = new Image("AP\\homebutton.png");
+	        ImageView iw4 = new ImageView(i4);
+	        //iw4.setX(450);
+	        //iw4.setY(20);
+	        iw4.setFitHeight(60);
+	        iw4.setFitWidth(60);
+	        Button b4 = new Button("", iw4);
+	        b4.setLayoutX(470);
+	        b4.setLayoutY(60);
+	        b4.setPadding(new Insets(-25));
+	        return b4;
+
 
 	    }
-	 
-	
-	public static int play()
-	{
-	
-	return 1;	
-	}
-	
-	public void menu_on_hit()
-	{
-		
 
-	}
-	
-	public void getinput()
-	{
-		
-	}
-	
-	public void check_star()
-	{
-		
-	}
-	public void pause(Stage stage,int pos) throws FileNotFoundException
-	{
-		
-		List<Image> images=new ArrayList<Image>();
-        addhomepagepause(images);
-        ImageView imageView=new ImageView();
-        animatehomepagepause(images,imageView);
+	    public static void addrotatingcirclesend(ImageView iw, ImageView iw2, ImageView iw3) throws FileNotFoundException {
+	        iw.setX(690);
+	        iw.setY(425);
+	        iw.setFitHeight(140);
+	        iw.setFitWidth(140);
+	        iw.setPreserveRatio(true);
 
-        Button b=addplaybuttonpause();
-        b.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(ActionEvent event) {
-        	try {
-        		ball_obj.sety_pos(pos);
-				stage.setScene(g);
-				Thread.sleep(10);
-				ball_obj.timeline2.play();
-				checkExitCondition.play();
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	}
-        	});
-        addscaletransition(b);
+	        RotateTransition rt = new RotateTransition(Duration.millis(1500), iw);
+	        rt.setByAngle(360);
+	        rt.setCycleCount(Animation.INDEFINITE);
+	        rt.play();
 
-        Button b2=addhomebuttonpause();
-        b2.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(ActionEvent event) {
-        	try {
-        		stage.setScene(Main.homescene);
-        		
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	}
-        	});
-        addscaletransition(b2);
+	        iw2.setX(670);
+	        iw2.setY(405);
+	        iw2.setFitHeight(180);
+	        iw2.setFitWidth(180);
+	        iw2.setPreserveRatio(true);
 
-        Image i = new Image("AP\\circle1.png");
-        ImageView iw = new ImageView(i);
-        Image i2 = new Image("AP\\circle2.png");
-        ImageView iw2 = new ImageView(i2);
-        Image i3 = new Image("AP\\circle1.png");
-        ImageView iw3 = new ImageView(i3);
-        Image i4 = new Image("AP\\circle2.png");
-        ImageView iw4 = new ImageView(i4);
+	        RotateTransition r = new RotateTransition(Duration.millis(1500), iw2);
+	        r.setByAngle(-360);
+	        r.setCycleCount(Animation.INDEFINITE);
+	        r.play();
 
-        addrotatingcirclespause(iw, iw2, iw3, iw4);
+	        iw3.setX(705);
+	        iw3.setY(595);
+	        iw3.setFitHeight(110);
+	        iw3.setFitWidth(110);
+	        iw3.setPreserveRatio(true);
 
-        Group root = new Group(imageView, b, b2, iw, iw2, iw3, iw4);
-        stage.setScene(new Scene(root, 1500, 780, Color.BLACK));
-        stage.show();
-		
-	}
-	public void save()
-	{
-		
-	}
-	public void updateCurrentScore()
-	{
-		score.setText("Score: "+value);
-	}
-	public void check_obstacle()
-	{
-		
-	}
-	public void set_ball_pos()
-	{
-		
-	}
-	
-	public List<Integer> getcolour()
-	{
-		return null;
-	}
-	
-	public void addObstacles() throws Exception
-	{	//System.out.print("\n Adding obstacles");
-	     int l=Obstacle_list.size();
-	     int prev_y=500;
-	     int sub=400;
-	     if(count>2)
-	    	 sub=500;
-	     if(l>0)
-		prev_y = Obstacle_list.get(l-1).gety_pos()-sub;
-		//System.out.print(" "+prev_y);
-		int no=getRandom();
-		//System.out.println(no);
-		if(no==1){
-			Obstacle_list.add(new Obstacle1(prev_y, this.ball_obj));
-			//System.out.print("added 1");
-		}
-		else if(no==2){
-			Obstacle_list.add(new Obstacle2(prev_y, this.ball_obj));
-			//System.out.print("added 2");
-		}
-		else {
-			Obstacle_list.add(new Obstacle3(prev_y, this.ball_obj));
-			//System.out.print("added 3");
-		}
-		
-		if(getRandomboolean())
-		{
-			if(colorwheel_obj1==null && count>1)
-			{
-				colorwheel_obj1=new ColorWheel(prev_y-400);
-				root.getChildren().add(colorwheel_obj1.star);
-				
-			      
-					
-				
-			}
-			else if(colorwheel_obj2==null&& count>1)
-			{
-				colorwheel_obj2=new ColorWheel(prev_y-400);
-				root.getChildren().add(colorwheel_obj2.star);
-				
-				
-			}
-		}
-		
-		int reduce=0;
-		if(no==2 && count>3)
-			reduce=230;
-		else 
-			reduce=150;
-		
-		if(true)
-		{
-			if(star_obj1==null && count>1&& no!=1)
-			{
-				star_obj1=new Star(prev_y-reduce);
-				root.getChildren().add(star_obj1.star);
-				
-			     if(no==3)
-			    	 star_obj1.setPos_x(star_obj1.getPos_x()+10);
-					
-				
-			}
-			else if(star_obj2==null&& count>1 && no!=1)
-			{
-				star_obj2=new Star(prev_y-reduce);
-				root.getChildren().add(star_obj2.star);
-				
-				   if(no==3)
-				    	 star_obj1.setPos_x(star_obj1.getPos_x()+10);
-				
-			}
-		}
-		//System.out.println("+++++++"+Obstacle_list.size());
-		
-		
-	}
-	
-	public void posStars()
-	{
-		
-	}
-	
-	public void difficulty()
-	{
-		
-	}
-	
-	public int ReturnScore()
-	{
-		return 1;
-	}
-	
-	public ImageView addbackground() throws FileNotFoundException {
+	        RotateTransition ro = new RotateTransition(Duration.millis(1500), iw3);
+	        ro.setByAngle(-360);
+	        ro.setCycleCount(Animation.INDEFINITE);
+	        ro.play();
 
-        Image image = new Image("AP\\background.png");
-        ImageView imageV=new ImageView(image);
-        imageV.setFitHeight(1700);
-        imageV.setFitWidth(1700);
-        imageV.setPreserveRatio(true);
-        return imageV;
+	    }
+	    static void addscaletransitionendend(Button h){
 
-    }
+	        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
+	        st.setToX(0.9);
+	        st.setToY(0.9);
+	        st.setByX(1);
+	        st.setByY(1);
+	        st.setCycleCount(Animation.INDEFINITE);
+	        st.play();
+	    }
 
-    public void savesend() {
-    	Main.save(this);
-    }
-    
-    public void savesend_revival() {
-    	Main.save_revival(this);
-    }
-    public void start(Stage stage) throws Exception {
-    	
-    	ImageView imageV= new ImageView();
-        imageV=addbackground();
+	    static void addscaletransition1end(ImageView h){
 
-        ImageView starthand=new ImageView(new Image("AP\\starthand.png"));
-        setstarthand(starthand);
+	        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
+	        st.setToX(0.9);
+	        st.setToY(0.9);
+	        st.setByX(1);
+	        st.setByY(1);
+	        st.setCycleCount(Animation.INDEFINITE);
+	        st.play();
+	    }
 
-        /*ImageView star=new ImageView(new Image("AP\\star.png"));
-        setstar(star);*/
+	    public void addendpageend(List<Image> images) throws FileNotFoundException {
 
-        /*ImageView colorwheel=new ImageView(new Image("AP\\colorwheel.png"));
-        setcolourwheel(colorwheel);*/
-
-        Image pause = new Image("AP\\pausebutton.png");
-        ImageView p = new ImageView(pause);
-        Button b1 =  new Button();
-        b1 = setpausebutton(p);
-        b1.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(ActionEvent event) {
-        	try {
-        		checkExitCondition.stop();
-        		ball_obj.timeline2.stop();
-        		pause(stage,ball_obj.gety_pos());
-        		
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	}
-        	});
-        addscaletransition(b1);
+	        Image image1 = new Image("AP\\homepage1.png");
+	        Image image2 = new Image("AP\\homepage2.png");
+	        Image image3 = new Image("AP\\homepage3.png");
+	        Image image4 = new Image("AP\\homepage4.png");
+	        Image image5 = new Image("AP\\homepage5.png");
+	        Image image6 = new Image("AP\\homepage6.png");
+	        Image image7 = new Image("AP\\homepage7.png");
+	        Image image8 = new Image("AP\\homepage8.png");
 
 
-        Image save = new Image("AP\\savebutton.png");
-        ImageView sv = new ImageView(save);
-        Button b2 = new Button();
-        b2 = setsavebutton(sv);
-        b2.setOnAction(new EventHandler<ActionEvent>() {
-        	@Override
-        	public void handle(ActionEvent ev) {
-        	try {
-        		checkExitCondition.stop();
-        		System.out.print("\nsaving");
-        		savesend();
-        		stage.setScene(Main.homescene);
-        		//Main.save((Serializable) this);
-        		
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	}
-        });
-        addscaletransition(b2);
-    	
-        Group root1 = new Group(imageV, b1, b2, starthand, ball, score);
-        root= root1;
-        root1.getChildren().add(Obstacle_list.get(0).getObstacle());
-        root1.getChildren().add(Obstacle_list.get(1).getObstacle());
-        Scene scene = new Scene(root1, 1500, 800, Color.BLACK);
+	        images.add(image1);images.add(image2);images.add(image3);images.add(image4);
+	        images.add(image5);images.add(image6);images.add(image7);images.add(image8);
 
-       // System.out.println("Entering handler");
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-        	//System.out.println("Enter pressed 1");
-            if(key.getCode()==KeyCode.SHIFT) {
-            	//System.out.println(ball.getCenterY());
-            	ball_obj.move();
- 
-            	if(ball_obj.gety_pos()<600) {
-                	
-            		starthand.setY(starthand.getY()+30);
-            		
-            		
-            		checking=true;
-            		if(Obstacle_list.size()>=1)
-            			{
-            			for(int i=0;i<Obstacle_list.size();i++)
-            			   Obstacle_list.get(i).sety_pos(Obstacle_list.get(i).gety_pos()+30);
-            			}
-            		
-                   if(colorwheel_obj1!=null)
-                	   colorwheel_obj1.sety_pos(colorwheel_obj1.gety_pos()+30);
-                   if(colorwheel_obj2!=null)
-                	   colorwheel_obj2.sety_pos(colorwheel_obj2.gety_pos()+30);
-                   
-                   if(star_obj1!=null)
-                	   star_obj1.setPos_y(star_obj1.getPos_y()+30);
-                   if(star_obj2!=null)
-                	   star_obj2.setPos_y(star_obj2.getPos_y()+30);
-                   
-            		ball_obj.sety_pos(ball_obj.gety_pos()+30);
-            		checking=false;
-            			}
-            		
-        		}
-            
-            
-            
-               //System.out.println(ball.getCenterY());
+	    }
+	    public static void animatehomepageend(List<Image> images,ImageView imageView) {
+	        Transition animation = new Transition() {
+	            {
+	                setCycleDuration(Duration.millis(2000)); // total time for animation
+	                setCycleCount(Animation.INDEFINITE);
+	            }
 
-        });
-        //scene.setEventDispatcher(new EventDispatcher(Event e));
-         
-			   checkExitCondition = new Timeline(new KeyFrame(Duration.millis(1),new EventHandler<ActionEvent>() {
+	            @Override
+	            protected void interpolate(double fraction) {
+	                int index = (int) (fraction*(images.size()-1));
+	                imageView.setImage(images.get(index));
+	                imageView.setX(620);
+	                imageView.setY(20);
+	                imageView.setFitHeight(300);
+	                imageView.setFitWidth(350);
+	                imageView.setPreserveRatio(true);
+	            }
+	        };
+	        animation.play();
+
+
+	    }
+	    static void scoredisplaysend() throws FileNotFoundException {
+	        score = new Image("AP\\score.png");
+	        s = new ImageView(score);
+	        s.setX(610);
+	        s.setY(220);
+	        s.setFitHeight(50);
+	        s.setFitWidth(300);
+	        s.setPreserveRatio(true);
+
+	        t1.setText(gamescore+"");
+	        t1.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+	        t1.setFill(Color.WHITESMOKE);
+	        t1.setX(750);
+	        t1.setY(280);
+
+	        bestscore = new Image("AP\\bestscore.png");
+	        bs = new ImageView(bestscore);
+	        bs.setX(610);
+	        bs.setY(320);
+	        bs.setFitHeight(50);
+	        bs.setFitWidth(300);
+	        bs.setPreserveRatio(true);
+
+	        t2.setText(highscore+"");
+	        t2.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 25));
+	        t2.setFill(Color.WHITESMOKE);
+	        t2.setX(750);
+	        t2.setY(380);
+	    }
+
+	    
 			
-				  
-			   @Override
-			   public void handle(ActionEvent event) {
-				   
-				   System.out.println(gameover);
-				   if(gameover || ball_obj.gety_pos()>=1000)
-					try {
-						checkExitCondition.stop();
-						if(value>Main.highscore)
-							Main.highscore=value;
-						
-					Main.gamescore=value;
-	        		savesend_revival();
-						Main.endgamepage(stage);
-						
-						checkExitCondition.stop();
-					} catch (FileNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+		public static void main(String[] args1)
+		{
+			 args=args1;
+			 MainMenu();
+			 
+		}
+		
+		public static void MainMenu() {
+			launch(args);
+		}
+		
+		public static  void NewGame(Stage stage) throws Exception
+		{
+			System.out.println("new game");
+			new_game_obj=new Game(stage);
+			
+			System.out.println("OVER");
+			
+		
+			
+		}
+		
+		public static  void endgamepage(Stage st) throws Exception
+		{
+			Game.gameover=false;
+			scoredisplaysend();
+			//new_game_obj=new Game(st);
+			
+		
+			
+			
+			 List<Image> images=new ArrayList<Image>();
+		        addhomepage(images);
+		        ImageView imageView=new ImageView();
+		        animatehomepageend(images,imageView);
+
+		        Button b=addrestartbuttonend();
+		        b.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        	try {
+		        		Game.gameover=false;
+						NewGame(st);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				   
-				  
-				   if(colorwheel_obj1!=null)
-				   {
-					   if(ball_obj.gety_pos()-100<=colorwheel_obj1.gety_pos())
-					   {
-						   root.getChildren().remove(colorwheel_obj1.star);
-						   colorwheel_obj1=null;
-						   ball_obj.change_colour(getRandom());
-					   }
-				   }
-				   
-				   if(colorwheel_obj2!=null)
-				   {
-					   if(ball_obj.gety_pos()-100<=colorwheel_obj2.gety_pos())
-					   {
-						   root.getChildren().remove(colorwheel_obj2.star);
-						   colorwheel_obj2=null;
-						   ball_obj.change_colour(getRandom());
-					   }
-				   }
-				   
-				   if(star_obj1!=null)
-				   {
-					   if(ball_obj.gety_pos()-100<=star_obj1.getPos_y())
-					   {
-						   root.getChildren().remove(star_obj1.star);
-						   star_obj1=null;
-						   value++;
-						   updateCurrentScore();
-					   }
-				   }
-				   
-				   if(star_obj2!=null)
-				   {
-					   if(ball_obj.gety_pos()-100<=star_obj2.getPos_y())
-					   {
-						   root.getChildren().remove(star_obj2.star);
-						   star_obj2=null;
-						  value++;
-						  updateCurrentScore();
-						  
-					   }
-				   }
-				   
-				 // System.out.println("Obstacles in list******"+Obstacle_list.size()+"*************");
-				 // for(int i=0;i<Obstacle_list.size();i++)
-					//     System.out.println(Obstacle_list.get(i).gety_pos()+Obstacle_list.get(i).getType());
-				  
-				  if(Obstacle_list.get(0).gety_pos()>=850 && checking==false && count>2) {
-	        			//System.out.println("***********HERE********************");
-	        			
-	        			//System.out.print("\nRemoved 1");
-	        			try {
-							addObstacles();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						root.getChildren().add(Obstacle_list.get(Obstacle_list.size()-1).getObstacle());
-						//System.out.print("\nAdded 0");
-						count++;
-						root.getChildren().remove(Obstacle_list.get(0).getObstacle());
-	        			Obstacle_list.remove(0);
-					}	
-				  else if(Obstacle_list.get(0).gety_pos()>=740 && checking==false && count<=2) {
-	        			//System.out.println("***********HERE********************");
-	        			
-	        		//	System.out.print("\nRemoved 1");
-	        			try {
-							addObstacles();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						root.getChildren().add(Obstacle_list.get(Obstacle_list.size()-1).getObstacle());
-						//System.out.print("\nAdded 0");
-						count++;
-						root.getChildren().remove(Obstacle_list.get(0).getObstacle());
-	        			Obstacle_list.remove(0);
-					}	
-				  
-				
-				  
-					
-			   }
+		        	}
+		        	});
+		        addscaletransitionendend(b);
 
+		        Button b2=addhomebuttonend();
+		        b2.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        		System.out.println("MAIN");
+		        		st.setScene(homescene);
+		        	}
+		        	});
+		        addscaletransitionendend(b2);
+
+		        ImageView b3=addstarcountend();
+		        addscaletransition1end(b3);
+
+		        Button b4=addstarbuttonend();
+		        b4.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        		try {
+		        		if(new_game_obj.value<2)
+		        		{
+		        			throw new NotSufficientStars();
+		        		}
+		        		}catch(Exception NotSufficientStars)
+		        		{
+		        			return;
+		        		}
+		        		Game.gameover=false;
+		        		Game g=Revival();
+		       
+		        		try {
+							new_game_obj = new Game(g, st);
+							new_game_obj = new Game(g, st);
+							
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	}
+		        	});
+		        addscaletransitionendend(b4);
+
+		        
+
+		        Text t4 = new Text();
+
+
+		        Image i = new Image("AP\\circle1.png");
+		        ImageView iw = new ImageView(i);
+		        Image i2 = new Image("AP\\circle2.png");
+		        ImageView iw2 = new ImageView(i2);
+		        Image i3 = new Image("AP\\circle1.png");
+		        ImageView iw3 = new ImageView(i3);
+		        addrotatingcirclesend(iw, iw2, iw3);
+
+		        t3.setText("-2");
+		        t3.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15));
+		        t3.setFill(Color.BLACK);
+		        t3.setX(750);
+		        t3.setY(655);
+
+		        t4.setText("20");
+		        t4.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+		        t4.setFill(Color.WHITESMOKE);
+		        t4.setX(1042);
+		        t4.setY(93);
+
+		        Group root = new Group();
+                root.getChildren().add(imageView);
+                root.getChildren().add(bs);
+                root.getChildren().add(s);
+                root.getChildren().add(t1);
+                root.getChildren().add(t2);
+                root.getChildren().add(b);
+                root.getChildren().add(b2);
+                root.getChildren().add(b3);
+                root.getChildren().add(b4);
+                root.getChildren().add(t3);
+                root.getChildren().add(t4);
+                root.getChildren().add(iw);
+                root.getChildren().add(iw2);
+                root.getChildren().add(iw3);
+                
+		        Scene scene = new Scene(root, 1500, 780, Color.BLACK);
+
+		        
+		        st.setScene(scene);
+		        st.show();
+		}
 		
-			}));
-			checkExitCondition.setCycleCount(Timeline.INDEFINITE);
-			checkExitCondition.play();
+		public static  void help()//
+		{
+			
+		}
+		public static Game ResumeGame()
+		{
+			FileInputStream f;
+			try {
+				f = new FileInputStream("colorswitch.ser");
+				ObjectInputStream i=new ObjectInputStream(f);
+				Game g = (Game) i.readObject();
+				return g;
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+	        
+		}
+		
+		
+		public static Game Revival()
+		{
+			FileInputStream f;
+			try {
+				f = new FileInputStream("revival.ser");
+				ObjectInputStream i=new ObjectInputStream(f);
+				Game g = (Game) i.readObject();
+				g.value-=2;
+				return g;
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+	        
+		}
+		
+		
+		public static void save_revival(Serializable game) {
+			savedgames.add((Game) game);
+			FileOutputStream f;
+			try {
+				f = new FileOutputStream("revival.ser");
+				ObjectOutputStream o=new ObjectOutputStream(f);
+				o.writeObject(game);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+		}
+		
+		public static void save(Serializable game) {
+			savedgames.add((Game) game);
+			FileOutputStream f;
+			try {
+				f = new FileOutputStream("colorswitch.ser");
+				ObjectOutputStream o=new ObjectOutputStream(f);
+				o.writeObject(game);
+				o.writeObject(savedgames);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+		}
+		
+		public static void computeHighScore()
+		{
+			
+		}
+		
+		public static void exit()
+		{
+			System.exit(0);
+		}
+		
+		
+		 public static void addhomepage(List<Image> images) throws FileNotFoundException {
 
-        g=scene;
-        stage.setTitle("Color Switch");
-        stage.setScene(scene);
-        stage.show();   
-      
-        
-    }
-    
-    void addscaletransition(Button h){
+		        Image image1 = new Image("AP\\homepage1.png");
+		        Image image2 = new Image("AP\\homepage2.png");
+		        Image image3 = new Image("AP\\homepage3.png");
+		        Image image4 = new Image("AP\\homepage4.png");
+		        Image image5 = new Image("AP\\homepage5.png");
+		        Image image6 = new Image("AP\\homepage6.png");
+		        Image image7 = new Image("AP\\homepage7.png");
+		        Image image8 = new Image("AP\\homepage8.png");
 
-        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
-        st.setToX(0.9);
-        st.setToY(0.9);
-        st.setByX(1);
-        st.setByY(1);
-        st.setCycleCount(Animation.INDEFINITE);
-        st.play();
-    }
-    public Button setsavebutton(ImageView sv){
-        //sv.setX(480);
-        //sv.setY(50);
-        sv.setFitHeight(60);
-        sv.setFitWidth(60);
-        Button b2 = new Button("", sv);
-        b2.setLayoutX(475);
-        b2.setLayoutY(60);
-        b2.setPadding(new Insets(-30));
-        sv.setPreserveRatio(true);
-        return b2;
-    }
-    public Button setpausebutton(ImageView p){
-        /*p.setX(955);
-        p.setY(50);*/
-        p.setFitHeight(60);
-        p.setFitWidth(60);
-        Button b1 = new Button("", p);
-        b1.setLayoutX(1040);
-        b1.setLayoutY(60);
-        b1.setPadding(new Insets(-30));
-        p.setPreserveRatio(true);
-        return b1;
-    }
-    void setstarthand(ImageView starthand) {
-        starthand.setX(720);
-        starthand.setY(720);
-        starthand.setFitHeight(60);
-        starthand.setFitWidth(60);
-        starthand.setPreserveRatio(true);
-    }
+
+		        images.add(image1);images.add(image2);images.add(image3);images.add(image4);
+		        images.add(image5);images.add(image6);images.add(image7);images.add(image8);
+
+		    }
+		    public void animatehomepage(List<Image> images,ImageView imageView) {
+		        Transition animation = new Transition() {
+		            {
+		                setCycleDuration(Duration.millis(2000)); // total time for animation
+		                setCycleCount(Animation.INDEFINITE);
+		            }
+
+		            @Override
+		            protected void interpolate(double fraction) {
+		                int index = (int) (fraction*(images.size()-1));
+		                imageView.setImage(images.get(index));
+		                imageView.setX(520);
+		                imageView.setY(20);
+		                imageView.setFitHeight(300);
+		                imageView.setFitWidth(600);
+		                imageView.setPreserveRatio(true);
+		            }
+		        };
+		        animation.play();
+
+
+		    }
+
+		    public Button addplaybutton() throws FileNotFoundException {
+		        Image i = new Image("AP\\playbutton.png");
+		        ImageView iw = new ImageView(i);
+		        /*iw.setX(700);
+		        iw.setY(390);*/
+		        iw.setFitHeight(100);
+		        iw.setFitWidth(100);
+		        Button b = new Button("", iw);
+		        b.setLayoutX(725);
+		        b.setLayoutY(415);
+		        b.setPadding(new Insets(-25));
+		        return b;
+		    }
+		    public Button addexitbutton() throws FileNotFoundException {
+
+		        Image i2 = new Image("AP\\exitbutton.png");
+		        ImageView iw2 = new ImageView(i2);
+		        //iw2.setX(1015);
+		        //iw2.setY(20);
+		        iw2.setFitHeight(60);
+		        iw2.setFitWidth(60);
+		        Button b2 = new Button("", iw2);
+		        b2.setLayoutX(1040);
+		        b2.setLayoutY(60);
+		        b2.setPadding(new Insets(-25));
+		        return b2;
+
+		    }
+		    public Button addloadbutton() throws FileNotFoundException {
+
+		        Image i3 = new Image("AP\\loadbutton.png");
+		        ImageView iw3 = new ImageView(i3);
+		        //iw3.setX(710);
+		        //iw3.setY(600);
+		        iw3.setFitHeight(80);
+		        iw3.setFitWidth(80);
+		        Button b3 = new Button("", iw3);
+		        b3.setLayoutX(735);
+		        b3.setLayoutY(625);
+		        b3.setPadding(new Insets(-25));
+		        return b3;
+		    }
+		    public Button addhelpbutton() throws FileNotFoundException {
+
+		        Image i4 = new Image("AP\\helpbutton.png");
+		        ImageView iw4 = new ImageView(i4);
+		        //iw4.setX(450);
+		        //iw4.setY(20);
+		        iw4.setFitHeight(60);
+		        iw4.setFitWidth(60);
+		        Button b4 = new Button("", iw4);
+		        b4.setLayoutX(475);
+		        b4.setLayoutY(60);
+		        b4.setPadding(new Insets(-25));
+		        return b4;
+
+
+		    }
+
+		    public void addrotatingcircles(ImageView iw, ImageView iw2, ImageView iw3) throws FileNotFoundException {
+		        iw.setX(675);
+		        iw.setY(365);
+		        iw.setFitHeight(150);
+		        iw.setFitWidth(150);
+		        iw.setPreserveRatio(true);
+
+		        RotateTransition rt = new RotateTransition(Duration.millis(1500), iw);
+		        rt.setByAngle(360);
+		        rt.setCycleCount(Animation.INDEFINITE);
+		        rt.play();
+
+		        iw2.setX(650);
+		        iw2.setY(340);
+		        iw2.setFitHeight(200);
+		        iw2.setFitWidth(200);
+		        iw2.setPreserveRatio(true);
+
+		        RotateTransition r = new RotateTransition(Duration.millis(1500), iw2);
+		        r.setByAngle(-360);
+		        r.setCycleCount(Animation.INDEFINITE);
+		        r.play();
+
+		        iw3.setX(695);
+		        iw3.setY(585);
+		        iw3.setFitHeight(110);
+		        iw3.setFitWidth(110);
+		        iw3.setPreserveRatio(true);
+
+		        RotateTransition ro = new RotateTransition(Duration.millis(1500), iw3);
+		        ro.setByAngle(-360);
+		        ro.setCycleCount(Animation.INDEFINITE);
+		        ro.play();
+
+		    }
+
+		    void addscaletransition(Button h){
+
+		        ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
+		        st.setToX(0.9);
+		        st.setToY(0.9);
+		        st.setByX(1);
+		        st.setByY(1);
+		        st.setCycleCount(Animation.INDEFINITE);
+		        st.play();
+		    }
+		    
+		    
+		    @Override
+		    public void start(Stage stage) throws FileNotFoundException {
+		    	
+		    	/*Media media = new Media("AP\\sound.mp3"); //replace /Movies/test.mp3 with your file
+		        MediaPlayer player = new MediaPlayer(media); 
+		        player.play();*/
+		        
+		        List<Image> images=new ArrayList<Image>();
+		        addhomepage(images);
+		        ImageView imageView=new ImageView();
+		        animatehomepage(images,imageView);
+
+		        Button b=addplaybutton();
+		        addscaletransition(b);
+		        b.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        	try {
+		        		Game.gameover=false;
+						NewGame(stage);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        	}
+		        	});
+
+		        Button b2=addexitbutton();
+		        addscaletransition(b2);
+		        
+		        b2.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        	exit();
+		        	}
+		        	});
+
+		        Button b3=addloadbutton();
+		        addscaletransition(b3);
+		        
+		        b3.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        
+		        		Game.gameover=false;
+		        		Resume r= new Resume(stage);
+		        		
+		        		
+		        	}
+		        	});
+
+		        Button b4=addhelpbutton();
+		        addscaletransition(b4);
+		        
+		        b4.setOnAction(new EventHandler<ActionEvent>() {
+		        	@Override
+		        	public void handle(ActionEvent event) {
+		        	help();
+		        	}
+		        	});
+
+		        Image i = new Image("AP\\circle1.png");
+		        ImageView iw = new ImageView(i);
+		        Image i2 = new Image("AP\\circle2.png");
+		        ImageView iw2 = new ImageView(i2);
+		        Image i3 = new Image("AP\\circle1.png");
+		        ImageView iw3 = new ImageView(i3);
+		        addrotatingcircles(iw, iw2, iw3);
+
+		        Group root = new Group(imageView,b,b2,b3,b4, iw, iw2, iw3);
+		        Scene scene = new Scene(root, 1500, 800, Color.BLACK);
+		        homescene=scene;
+		        stage.setTitle("Color Switch");
+		        stage.setScene(scene);
+
+		        stage.show();
+		    }
+		    
+		    
 
 }
