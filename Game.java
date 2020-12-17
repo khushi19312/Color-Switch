@@ -4,7 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -318,6 +320,20 @@ public class Game extends Application implements Serializable
 	      
 
 	    }
+	 
+	 public void traversal()
+	 {
+	 	 Iterator color_iter = colors.entrySet().iterator(); 
+	   
+	         while (color_iter.hasNext()) { 
+	             Map.Entry mapElement = (Map.Entry)color_iter.next(); 
+	             int colors_no= ((int)mapElement.getValue()); 
+	             System.out.println(colors_no); 
+	             }
+	 }
+
+
+	 
 	 
 	
 	public static int play()
