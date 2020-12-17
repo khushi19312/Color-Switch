@@ -516,6 +516,8 @@ public class Game extends Application implements Serializable
 	public ImageView addbackground() throws FileNotFoundException {
 
         Image image = new Image("AP\\background.png");
+        if(Main.lightmode==true)
+        	image = new Image("AP\\white.jpg");
         ImageView imageV=new ImageView(image);
         imageV.setFitHeight(1700);
         imageV.setFitWidth(1700);
@@ -554,8 +556,7 @@ public class Game extends Application implements Serializable
         	public void handle(ActionEvent event) {
         	try {
         		checkExitCondition.stop();
-        		if(ball_obj.timeline2!=null)
-        			ball_obj.timeline2.stop();
+        		ball_obj.timeline2.stop();
         		pause(stage,ball_obj.gety_pos());
         		
 			} catch (Exception e) {
