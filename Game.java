@@ -582,6 +582,7 @@ public class Game extends Application implements Serializable
         	public void handle(ActionEvent event) {
         	try {
         		checkExitCondition.stop();
+        		if(ball_obj.timeline2!=null)
         		ball_obj.timeline2.stop();
         		pause(stage,ball_obj.gety_pos());
         		
