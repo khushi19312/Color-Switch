@@ -42,7 +42,7 @@ public class Obstacle1 extends Obstacles{
 	}*/
 	private transient List<Rectangle> c=new ArrayList();
 	private Ball ball;
-	Obstacle1(int pos, Ball b) throws Exception
+	public Obstacle1(int pos, Ball b) throws Exception
 	{
 		 
          sety_pos(pos);
