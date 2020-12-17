@@ -59,9 +59,10 @@ public class Game extends Application implements Serializable
     transient Label score;
     boolean pausegame=false;
     transient Scene g;
+    static ImageView imageV;
     transient ImageView cs = new ImageView();
     transient List<Image> switches = new ArrayList<>();
-    
+    static boolean lightmode=true;
     public List<Obstacles> getObstacleslist(){
     	return Obstacle_list;
     }
@@ -516,7 +517,7 @@ public class Game extends Application implements Serializable
 	public ImageView addbackground() throws FileNotFoundException {
 
         Image image = new Image("AP\\background.png");
-        if(Main.lightmode==true)
+        if(lightmode==true)
         	image = new Image("AP\\white.jpg");
         ImageView imageV=new ImageView(image);
         imageV.setFitHeight(1700);
@@ -535,8 +536,33 @@ public class Game extends Application implements Serializable
     }
     public void start(Stage stage) throws Exception {
     	
-    	ImageView imageV= new ImageView();
+    	imageV= new ImageView();
         imageV=addbackground();
+        
+        
+        Button backb =  new Button();
+        Image change = new Image("AP\\pausebutton.png");//////DOOOO
+        ImageView c = new ImageView(change);
+        backb = setbackbutton(c);
+        addscaletransition(backb);
+        backb.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent event) {
+        	try {
+        		lightmode=!lightmode;
+        		root.getChildren().remove(imageV);
+				imageV=addbackground();
+				root.getChildren().add(0,imageV);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	}
+        	});
+        
 
         ImageView starthand=new ImageView(new Image("AP\\starthand.png"));
         setstarthand(starthand);
@@ -590,7 +616,7 @@ public class Game extends Application implements Serializable
         });
         addscaletransition(b2);
     	
-        Group root1 = new Group(imageV, b1, b2, starthand, ball, score);
+        Group root1 = new Group(imageV, b1, b2, starthand, ball, score,backb);
         root= root1;
         root1.getChildren().add(Obstacle_list.get(0).getObstacle());
         root1.getChildren().add(Obstacle_list.get(1).getObstacle());
@@ -763,7 +789,18 @@ public class Game extends Application implements Serializable
         
     }
     
-    void addscaletransition(Button h){
+    private Button setbackbutton(ImageView sv) {
+		// TODO Auto-generated method stub
+    	sv.setFitHeight(60);
+        sv.setFitWidth(60);
+        Button b2 = new Button("", sv);
+        b2.setLayoutX(275);
+        b2.setLayoutY(60);
+        b2.setPadding(new Insets(-30));
+        sv.setPreserveRatio(true);
+        return b2;
+	}
+	void addscaletransition(Button h){
 
         ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
         st.setToX(0.9);
