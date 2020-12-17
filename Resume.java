@@ -31,7 +31,7 @@ public class Resume extends Application {
 	
 	//ArrayList<Game> savedgames;
 	
-	Resume( Stage stage){
+	public Resume( Stage stage){
 		try {
 			start(stage);
 		} catch (FileNotFoundException e) {
