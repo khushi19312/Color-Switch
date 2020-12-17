@@ -1,5 +1,6 @@
 package application;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,13 +8,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-public class ColorWheel {
+public class ColorWheel implements Serializable{
 
 	private int x_pos;
 	private int y_pos;
 	
 	private long serialVersionUID;
-	ImageView star;
+	transient ImageView star;
 	
 	ColorWheel(int pos)
 	{
