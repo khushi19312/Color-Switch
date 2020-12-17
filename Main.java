@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -271,6 +274,8 @@ public class Main extends Application
 		
 		public static  void endgamepage(Stage st) throws Exception
 		{
+			
+			    
 			Game.gameover=false;
 			scoredisplaysend();
 			//new_game_obj=new Game(st);
@@ -507,11 +512,7 @@ public class Main extends Application
 	        
 		}
 		
-		public static void computeHighScore()
-		{
-			
-		}
-		
+	
 		public static void exit()
 		{
 			System.exit(0);
@@ -665,12 +666,22 @@ public class Main extends Application
 		    
 		    
 		    @Override
-		    public void start(Stage stage) throws FileNotFoundException {
+		    public void start(Stage stage) throws FileNotFoundException, InterruptedException {
 		    	
 		    	/*Media media = new Media("AP\\sound.mp3"); //replace /Movies/test.mp3 with your file
 		        MediaPlayer player = new MediaPlayer(media); 
 		        player.play();*/
 		        
+
+				/* AudioClip audioClip = new AudioClip(Paths.get("AP//sample.mp3").toUri().toString());
+
+				    for (int i = 0; i < 100; i++)
+				    {
+				        int volume = i;
+				        Platform.runLater(() -> audioClip.play(volume));
+				        Thread.sleep(10);
+				    }
+				    */
 		        List<Image> images=new ArrayList<Image>();
 		        addhomepage(images);
 		        ImageView imageView=new ImageView();
