@@ -229,13 +229,14 @@ public class Game extends Application implements Serializable
 		//addObstacles();
 		start(stage);
     }
-	public int getcurrentscore() {
-		return currentScore;
+	public int getvalue() {
+		return value;
 	}
-	public void initialize(Game g, Stage stage) throws Exception
+	public Game(Game g, Stage stage) throws Exception
 	{
 		value=0;
-		this.currentScore= g.getcurrentscore();
+		this.value= g.getvalue();
+		
 		colors=new HashMap<Integer, Color>();
 		Color purple=Color.web("#FF0181");
 		Color pink=Color.web("#900DFF");
@@ -251,6 +252,7 @@ public class Game extends Application implements Serializable
 		score.setLayoutX(850);
 		score.setLayoutY(40);
 		score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		updateCurrentScore();
 		Obstacle_list = new ArrayList<Obstacles>();
 		
 		//Obstacle_list = g.getObstacleslist();
