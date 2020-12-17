@@ -55,16 +55,16 @@ public class Game extends Application implements Serializable
 	private transient Circle ball;
 	static transient Timeline checkExitCondition;
 	static boolean checking=false;
-    int count=0;
+    private int count=0;
     transient Group root;
     static boolean gameover=false;
     transient Label score;
     boolean pausegame=false;
     transient Scene g;
-    static ImageView imageV;
+    private static ImageView imageV;
     transient ImageView cs = new ImageView();
     transient List<Image> switches = new ArrayList<>();
-    static boolean lightmode=true;
+    private static boolean lightmode=true;
     public List<Obstacles> getObstacleslist(){
     	return Obstacle_list;
     }
@@ -302,7 +302,16 @@ public class Game extends Application implements Serializable
 	    start(stage);
 	
     }
+	public void traversal()
+	 {
+	 	 Iterator color_iter = colors.entrySet().iterator(); 
 
+	         while (color_iter.hasNext()) { 
+	             Map.Entry mapElement = (Map.Entry)color_iter.next(); 
+	             int colors_no= ((int)mapElement.getValue()); 
+	             System.out.println(colors_no); 
+	             }
+	 }
 	 int getRandom()
 	    {
 	    	double f = Math.random()/Math.nextDown(1.0);
@@ -320,20 +329,6 @@ public class Game extends Application implements Serializable
 	      
 
 	    }
-	 
-	 public void traversal()
-	 {
-	 	 Iterator color_iter = colors.entrySet().iterator(); 
-	   
-	         while (color_iter.hasNext()) { 
-	             Map.Entry mapElement = (Map.Entry)color_iter.next(); 
-	             int colors_no= ((int)mapElement.getValue()); 
-	             System.out.println(colors_no); 
-	             }
-	 }
-
-
-	 
 	 
 	
 	public static int play()
@@ -557,7 +552,7 @@ public class Game extends Application implements Serializable
         
         
         Button backb =  new Button();
-        Image change = new Image("AP\\pausebutton.png");//////DOOOO
+        Image change = new Image("AP\\bgchange.png");
         ImageView c = new ImageView(change);
         backb = setbackbutton(c);
         addscaletransition(backb);
