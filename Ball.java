@@ -29,10 +29,10 @@ public class Ball extends Application implements Serializable{
 	  private boolean presence;
 	  private static long serialVersionUID;
 	  private float dist;
-      private float gr;
-      transient Timeline pre=null;
-      transient Timeline timeline2=null;
-      Ball(HashMap<Integer,Color> colors)
+     private float gr;
+      private transient Timeline pre=null;
+      
+      public Ball(HashMap<Integer,Color> colors)
       {
     	  this.colors=colors;
       }
@@ -107,7 +107,7 @@ public class Ball extends Application implements Serializable{
 	  }
 	  
 	 
-	
+	  protected transient Timeline timeline2=null;
 	public Circle getMyball() {
 		return myball;
 	}
