@@ -104,11 +104,12 @@ public class Resume extends Application {
     
     public Game deserialise(int count) {
     	FileInputStream f;
-    	ArrayList<Game> g = new ArrayList<>();
-		try {
-			f = new FileInputStream("colorswitch.ser");
+    	Game g = null;
+		switch(count){
+		case 1:try {
+			f = new FileInputStream("colorswitch1.ser");
 			ObjectInputStream i=new ObjectInputStream(f);
-			g = (ArrayList) i.readObject();
+			g = (Game) i.readObject();
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -120,7 +121,41 @@ public class Resume extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-			return (Game)g.get(count-1);
+		break;
+		case 2:try {
+			f = new FileInputStream("colorswitch2.ser");
+			ObjectInputStream i=new ObjectInputStream(f);
+			g = (Game) i.readObject();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		break;
+		case 3:try {
+			f = new FileInputStream("colorswitch3.ser");
+			ObjectInputStream i=new ObjectInputStream(f);
+			g = (Game) i.readObject();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		break;
+	}
+			return (Game) g;
     }
     
     void addscaletransition(Button h){
@@ -159,6 +194,7 @@ public class Resume extends Application {
         	try {
 				Game g = deserialise(1);
 				Game resume_game = new Game(g, stage);
+				resume_game.gameover = false;
 				//resume_game = new Game(g, stage);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -173,6 +209,7 @@ public class Resume extends Application {
         	try {
         		Game g = deserialise(2);
         		Game resume_game = new Game(g, stage);
+        		resume_game.gameover = false;
         		//resume_game = new Game(g, stage);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -187,6 +224,7 @@ public class Resume extends Application {
         	try {
         		Game g = deserialise(3);
         		Game resume_game = new Game(g, stage);
+        		resume_game.gameover = false;
         		//resume_game = new Game(g, stage);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
