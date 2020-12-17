@@ -46,25 +46,25 @@ public class Game extends Application implements Serializable
 	private List<Obstacles> Obstacle_list;
 	private Star star_obj1;
 	private Star star_obj2;
-	protected int value;
+	
 	private ColorWheel colorwheel_obj1,colorwheel_obj2;
 	private transient HashMap<Integer,Color> colors;
 	private int currentScore;
 	private long serialVersionUID;
 	private static String[] args;
 	private transient Circle ball;
-	static transient Timeline checkExitCondition;
-	static boolean checking=false;
+	
+	static private boolean checking=false;
     private int count=0;
-    transient Group root;
+    transient private Group root;
     static boolean gameover=false;
-    transient Label score;
-    boolean pausegame=false;
-    transient Scene g;
+    transient private Label score;
+    private boolean pausegame=false;
+    transient private Scene g;
     private static ImageView imageV;
-    transient ImageView cs = new ImageView();
-    transient List<Image> switches = new ArrayList<>();
-    private static boolean lightmode=true;
+    private transient ImageView cs = new ImageView();
+    private transient List<Image> switches = new ArrayList<>();
+    private static boolean lightmode=false;
     public List<Obstacles> getObstacleslist(){
     	return Obstacle_list;
     }
@@ -194,8 +194,9 @@ public class Game extends Application implements Serializable
 
 
     }
-
-	Game(Stage stage) throws Exception
+    static transient protected Timeline checkExitCondition;
+    protected int value;
+	public Game(Stage stage) throws Exception
 	{
 	
 		value=0;
@@ -645,6 +646,11 @@ public class Game extends Application implements Serializable
                 	
             		starthand.setY(starthand.getY()+30);
             		
+            		if(count>0 && count%10==0)
+            		{
+            			ball_obj.increasey_jump(5);
+            			
+            		}
             		
             		checking=true;
             		if(Obstacle_list.size()>=1)
