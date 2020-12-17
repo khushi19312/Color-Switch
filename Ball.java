@@ -1,5 +1,6 @@
 package application;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import javafx.animation.Animation;
@@ -18,9 +19,9 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Ball extends Application{
-	  private Circle myball;
-	  private HashMap<Integer,Color> colors;
+public class Ball extends Application implements Serializable{
+	  private transient Circle myball;
+	  private transient HashMap<Integer,Color> colors;
 	  private int x_pos;
 	  private int y_pos=700;
 	  private int y_jump=100;
@@ -29,7 +30,7 @@ public class Ball extends Application{
 	  private static long serialVersionUID;
 	  float dist;
       float gr;
-      Timeline pre=null;
+      transient Timeline pre=null;
       
       Ball(HashMap<Integer,Color> colors)
       {
