@@ -43,24 +43,22 @@ public class Main extends Application
 		private static Game new_game_obj;
 		private boolean resume_game;
 		private Resume resume_game_obj;
-		private Save save_obj;
+		
 		private boolean exit;
 		private HashMap<Integer,Game> prev_games;
 		private int highScore;
 		private static String[] args;
-		static int highscore=0;
-	    static Image score;
-	    static ImageView s;
-	    static Text t1 = new Text();
-        static Scene homescene;
-	    static Image bestscore;
-	    static int gamescore=0;
-	    static ImageView bs;
-	    static Text t2 = new Text();
-	    static Text t3 = new Text();
-	    static Text t4 = new Text();
-	    static ArrayList<Game> savedgames=new ArrayList<Game>();
-	    public static int countsaved;
+		
+	    private static Image score;
+	    private static ImageView s;
+	    private static Text t1 = new Text();
+	    
+	    private static ImageView bs;
+	    private static Text t2 = new Text();
+	    private static Text t3 = new Text();
+	    private static Text t4 = new Text();
+	    private static ArrayList<Game> savedgames=new ArrayList<Game>();
+	    private static int countsaved;
 	    
 	    public static ImageView addstarcountend() throws FileNotFoundException {
 
@@ -213,6 +211,10 @@ public class Main extends Application
 
 
 	    }
+	    static int highscore=0;
+	    static Scene homescene;
+	    static Image bestscore;
+	    static int gamescore=0;
 	    static void scoredisplaysend() throws FileNotFoundException {
 	        score = new Image("AP\\score.png");
 	        s = new ImageView(score);
