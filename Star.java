@@ -13,8 +13,8 @@ public class Star implements Serializable{
 	private int count;
 	private int difficulty;
 	private long serialVersionUID;
-	transient ImageView star;
-	Star(int pos)
+	
+	public Star(int pos)
 	{
 		Image i=new Image("AP\\star.png");
 		   star = new ImageView(i);
@@ -53,6 +53,8 @@ public class Star implements Serializable{
 	public int getDifficulty() {
 		return difficulty;
 	}
+	protected transient ImageView star;
+	
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
 	}
