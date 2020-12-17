@@ -1,6 +1,7 @@
 package application;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Game extends Application
+public class Game extends Application implements Serializable
 {
 	private Ball ball_obj;
 	private List<Obstacles> Obstacle_list;
@@ -45,22 +46,28 @@ public class Game extends Application
 	private Star star_obj2;
 	protected int value;
 	private ColorWheel colorwheel_obj1,colorwheel_obj2;
-	private HashMap<Integer,Color> colors;
+	private transient HashMap<Integer,Color> colors;
 	private int currentScore;
 	private long serialVersionUID;
 	private static String[] args;
-	private Circle ball;
-	static Timeline checkExitCondition;
+	private transient Circle ball;
+	static transient Timeline checkExitCondition;
 	static boolean checking=false;
     int count=0;
-    Group root;
+    transient Group root;
     static boolean gameover=false;
-    Label score;
+    transient Label score;
     boolean pausegame=false;
-    Scene g;
-    ImageView cs = new ImageView();
-    List<Image> switches = new ArrayList<>();
+    transient Scene g;
+    transient ImageView cs = new ImageView();
+    transient List<Image> switches = new ArrayList<>();
     
+    public List<Obstacles> getObstacleslist(){
+    	return Obstacle_list;
+    }
+    public Ball myballobj() {
+    	return ball_obj;
+    }
     public Button addplaybuttonpause() throws FileNotFoundException {
         Image i = new Image("AP\\playbutton.png");
         ImageView iw = new ImageView(i);
@@ -146,7 +153,6 @@ public class Game extends Application
         st.play();
     }
     
-
     public void addhomepagepause(List<Image> images) throws FileNotFoundException {
 
         Image image1 = new Image("AP\\homepage1.png");
@@ -186,7 +192,6 @@ public class Game extends Application
 
     }
 
-    
 	Game(Stage stage) throws Exception
 	{
 	
@@ -222,10 +227,75 @@ public class Game extends Application
 		count++;
 		//System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
 		//addObstacles();
-		
-		
-		
 		start(stage);
+    }
+	public int getcurrentscore() {
+		return currentScore;
+	}
+	public void initialize(Game g, Stage stage) throws Exception
+	{
+		value=0;
+		this.currentScore= g.getcurrentscore();
+		colors=new HashMap<Integer, Color>();
+		Color purple=Color.web("#FF0181");
+		Color pink=Color.web("#900DFF");
+		Color blue=Color.web("FAE100");
+		Color white=Color.rgb(255,255, 255);
+		Color yellow=Color.web("#32DBF0");
+		colors.put(1,purple);//purple
+		colors.put(2,pink);//pink
+		colors.put(3,blue);//blue
+		colors.put(4,yellow);//yellow
+		score = new Label("Score: ");
+		score.setTextFill(white);
+		score.setLayoutX(850);
+		score.setLayoutY(40);
+		score.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Obstacle_list = new ArrayList<Obstacles>();
+		
+		//Obstacle_list = g.getObstacleslist();
+		 int ballcolor=g.myballobj().get_colour();
+	        ball = new Circle(12,colors.get(ballcolor));
+	        ball_obj=new Ball(colors);
+			ball_obj.setMyball(ball);
+	        ball_obj.sety_pos(g.myballobj().gety_pos());
+	        ball_obj.setx_pos(750);
+	        ball_obj.change_colour(ballcolor);
+	        ball.setTranslateZ(1);
+	        //ball.relocate(0,10);
+	        
+	    for(int i=0;i<g.getObstacleslist().size();++i) {
+			if(g.getObstacleslist().get(i).getClass().getName().equals("Obstacle1")) {
+				Obstacle1 o=new Obstacle1(g.getObstacleslist().get(i).gety_pos(), this.ball_obj);
+				Obstacle_list.add(o);
+			}
+			if(g.getObstacleslist().get(i).getClass().getName().equals("Obstacle2")) {
+				Obstacle2 o=new Obstacle2(g.getObstacleslist().get(i).gety_pos(), this.ball_obj);
+				Obstacle_list.add(o);
+			}
+			if(g.getObstacleslist().get(i).getClass().getName().equals("Obstacle3")) {
+				Obstacle3 o=new Obstacle3(g.getObstacleslist().get(i).gety_pos(), this.ball_obj);
+				Obstacle_list.add(o);
+			}
+		}
+		count = Obstacle_list.size();
+		if(count==1) {
+			addObstacles();
+			count++;
+		}
+		else if(count==0) {
+			Obstacle_list.add(new Obstacle1(500, this.ball_obj));
+			count++;
+			Obstacle_list.add(new Obstacle1(100, this.ball_obj));
+			count++;
+		}
+		
+		//System.out.print("\n"+ Obstacle_list.get(0).gety_pos() + " " + Obstacle_list.get(0).gety_gpos());
+		//addObstacles();
+		cs = new ImageView();
+	    switches = new ArrayList<>(); 
+	    start(stage);
+	
     }
 
 	 int getRandom()
@@ -452,10 +522,13 @@ public class Game extends Application
 
     }
 
-    
+    public void savesend() {
+    	Main.save(this);
+    }
     public void start(Stage stage) throws Exception {
-
-        ImageView imageV=addbackground();
+    	
+    	ImageView imageV= new ImageView();
+        imageV=addbackground();
 
         ImageView starthand=new ImageView(new Image("AP\\starthand.png"));
         setstarthand(starthand);
@@ -490,16 +563,29 @@ public class Game extends Application
         ImageView sv = new ImageView(save);
         Button b2 = new Button();
         b2 = setsavebutton(sv);
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override
+        	public void handle(ActionEvent ev) {
+        	try {
+        		checkExitCondition.stop();
+        		System.out.print("\nsaving");
+        		savesend();
+        		stage.setScene(Main.homescene);
+        		//Main.save((Serializable) this);
+        		
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	}
+        });
         addscaletransition(b2);
-        
-       
-        
-        
     	
-        root = new Group(imageV, b1, b2, starthand,ball,score);
-        root.getChildren().add(Obstacle_list.get(0).getObstacle());
-        root.getChildren().add(Obstacle_list.get(1).getObstacle());
-        Scene scene = new Scene(root, 1500, 800);
+        Group root1 = new Group(imageV, b1, b2, starthand, ball, score);
+        root= root1;
+        root1.getChildren().add(Obstacle_list.get(0).getObstacle());
+        root1.getChildren().add(Obstacle_list.get(1).getObstacle());
+        Scene scene = new Scene(root1, 1500, 800, Color.BLACK);
 
        // System.out.println("Entering handler");
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
@@ -670,11 +756,7 @@ public class Game extends Application
 			}));
 			checkExitCondition.setCycleCount(Timeline.INDEFINITE);
 			checkExitCondition.play();
-			
-			
-			
-			
-        
+
         g=scene;
         stage.setTitle("Color Switch");
         stage.setScene(scene);
@@ -683,7 +765,6 @@ public class Game extends Application
         
     }
     
-
     void addscaletransition(Button h){
 
         ScaleTransition st = new ScaleTransition(Duration.millis(1000), h);
