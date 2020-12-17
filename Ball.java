@@ -31,7 +31,7 @@ public class Ball extends Application implements Serializable{
 	  float dist;
       float gr;
       transient Timeline pre=null;
-      
+      transient Timeline timeline2=null;
       Ball(HashMap<Integer,Color> colors)
       {
     	  this.colors=colors;
@@ -81,7 +81,7 @@ public class Ball extends Application implements Serializable{
      	 dist=5;
      	 gr=(float)0.2;
      	//System.out.println("Enter pressed");
-          Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>(){
+          timeline2 = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>(){
          		 @Override
          		 public void handle(ActionEvent e)
          		 {
