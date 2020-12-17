@@ -14,9 +14,9 @@ public class ColorWheel implements Serializable{
 	private int y_pos;
 	
 	private long serialVersionUID;
-	transient ImageView star;
+
 	
-	ColorWheel(int pos)
+	public ColorWheel(int pos)
 	{
 		Image i=new Image("AP\\colorwheel.png");
 	   star = new ImageView(i);
@@ -40,6 +40,7 @@ public class ColorWheel implements Serializable{
 		x_pos=x;
 		star.setX(x);
 	}
+	protected transient ImageView star;
 	public void sety_pos(int y)
 	{
 	y_pos=y;
