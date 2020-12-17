@@ -1,9 +1,11 @@
 package application;
 
+import java.io.Serializable;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Star {
+public class Star implements Serializable{
 
 	private int stars_for_revival;
 	private int pos_x;
@@ -11,7 +13,7 @@ public class Star {
 	private int count;
 	private int difficulty;
 	private long serialVersionUID;
-	ImageView star;
+	transient ImageView star;
 	Star(int pos)
 	{
 		Image i=new Image("AP\\star.png");
