@@ -404,7 +404,7 @@ public class Game extends Application implements Serializable
 	}
 	public void updateCurrentScore()
 	{
-		score.setText("Score: "+value*5);
+		score.setText("Score: "+value);
 	}
 	public void check_obstacle()
 	{
@@ -527,6 +527,10 @@ public class Game extends Application implements Serializable
     public void savesend() {
     	Main.save(this);
     }
+    
+    public void savesend_revival() {
+    	Main.save_revival(this);
+    }
     public void start(Stage stage) throws Exception {
     	
     	ImageView imageV= new ImageView();
@@ -646,6 +650,7 @@ public class Game extends Application implements Serializable
 							Main.highscore=value;
 						
 					Main.gamescore=value;
+	        		savesend_revival();
 						Main.endgamepage(stage);
 						
 						checkExitCondition.stop();
