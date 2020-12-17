@@ -86,18 +86,16 @@ public abstract class Obstacles extends Application implements Serializable{
 		return type;
 	}
 	
+	public abstract void start() throws Exception;
 
-	 public abstract void start() throws Exception;
-	 
-public final void preparation() throws Exception
-{
-	start();
-	List<Rectangle> sq=new LinkedList();
-	create(sq);
-	move(new Group(),sq);
+	public final void preparation() throws Exception
+	{
+		start();
+		List<Rectangle> sq=new LinkedList();
+		create(sq);
+		move(new Group(),sq);
 
-}
-
+	}
 	//private void checkDifficulty(Stars s) {
 	@Override
 	public void start(Stage arg0) throws Exception {
@@ -112,7 +110,6 @@ public final void preparation() throws Exception
 	    obstacle.setLayoutX(x_pos);
 		obstacle.setLayoutY(y_pos);
 		System.out.println("Tpos of obstacle is "+y_pos);
-		
 		
 	}
 	
