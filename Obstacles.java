@@ -20,7 +20,8 @@ import javafx.util.Duration;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.application.Application;
 
@@ -84,6 +85,19 @@ public abstract class Obstacles extends Application implements Serializable{
 	public String getType() {
 		return type;
 	}
+	
+
+	 public abstract void start() throws Exception;
+	 
+public final void preparation() throws Exception
+{
+	start();
+	List<Rectangle> sq=new LinkedList();
+	create(sq);
+	move(new Group(),sq);
+
+}
+
 	//private void checkDifficulty(Stars s) {
 	@Override
 	public void start(Stage arg0) throws Exception {
@@ -98,6 +112,7 @@ public abstract class Obstacles extends Application implements Serializable{
 	    obstacle.setLayoutX(x_pos);
 		obstacle.setLayoutY(y_pos);
 		System.out.println("Tpos of obstacle is "+y_pos);
+		
 		
 	}
 	
