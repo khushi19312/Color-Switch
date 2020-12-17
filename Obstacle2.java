@@ -43,7 +43,7 @@ public class Obstacle2 extends Obstacles{
 	}*/
 	private transient List<Rectangle> sq=new ArrayList();;
 	private Ball ball;
-	Obstacle2(int pos, Ball b) throws Exception
+	public Obstacle2(int pos, Ball b) throws Exception
 	{
 		
 		ball = (Ball)b; 
