@@ -40,8 +40,8 @@ public class Obstacle1 extends Obstacles{
 	/*Obstacle1(Stage stage) throws Exception{
 		start(stage);
 	}*/
-	List<Rectangle> c=new ArrayList();
-	Ball ball;
+	private transient List<Rectangle> c=new ArrayList();
+	private Ball ball;
 	Obstacle1(int pos, Ball b) throws Exception
 	{
 		 
