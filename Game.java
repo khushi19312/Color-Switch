@@ -351,10 +351,10 @@ public class Game extends Application implements Serializable
         	@Override
         	public void handle(ActionEvent event) {
         	try {
-        		
+        		ball_obj.sety_pos(pos);
 				stage.setScene(g);
-				ball_obj.sety_pos(pos);
-				Thread.sleep(100);
+				Thread.sleep(10);
+				ball_obj.timeline2.play();
 				checkExitCondition.play();
 				
 			} catch (Exception e) {
@@ -548,6 +548,7 @@ public class Game extends Application implements Serializable
         	public void handle(ActionEvent event) {
         	try {
         		checkExitCondition.stop();
+        		ball_obj.timeline2.stop();
         		pause(stage,ball_obj.gety_pos());
         		
 			} catch (Exception e) {
@@ -654,19 +655,7 @@ public class Game extends Application implements Serializable
 						e.printStackTrace();
 					}
 				   
-				   if(pausegame)
-				   {
-					   checkExitCondition.stop();
-					   
-					   try {
-						pause(stage,ball_obj.gety_pos());
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					   pausegame=false;
-					   
-				   }
+				  
 				   if(colorwheel_obj1!=null)
 				   {
 					   if(ball_obj.gety_pos()-100<=colorwheel_obj1.gety_pos())
