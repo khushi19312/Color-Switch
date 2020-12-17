@@ -28,8 +28,8 @@ public class Ball extends Application implements Serializable{
 	  private int color;
 	  private boolean presence;
 	  private static long serialVersionUID;
-	  float dist;
-      float gr;
+	  private float dist;
+      private float gr;
       transient Timeline pre=null;
       transient Timeline timeline2=null;
       Ball(HashMap<Integer,Color> colors)
