@@ -1,7 +1,7 @@
 # Color-Switch
 
 Clone of the popular Color Switch game's infinite mode.
-Built in Java for the logic and code,JavaFX has been used for the GUI.
+Built in Java for the logic and code, JavaFX has been used for the GUI.
 This same has various features:
 Save upto 3 games for later play
 Pause game at any point in time
